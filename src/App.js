@@ -1,17 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
-import Hello from './Hello';
+import Banner from './components/Banner';
 
 function App() {
   return (
     <>
-    <div className="App text-3xl font-bold">
-        test usage of tailwindcss
-    </div>
-    <h1 class="App">
-      second div
-    </h1>
-    <Hello></Hello>
+    <Banner></Banner>
     </>
     
   );
