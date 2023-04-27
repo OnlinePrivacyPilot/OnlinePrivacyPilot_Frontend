@@ -7,7 +7,7 @@ class Banner extends Component {
     state = {  } 
     render() { 
         return (
-        <div>
+        <div className='w-screen h-[80px] z-10 bg-zinc-400 fixed drop-shalow-lg' >
             <Header />
             <Description />
         </div>);

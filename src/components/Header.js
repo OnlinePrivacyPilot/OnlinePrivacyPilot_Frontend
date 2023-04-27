@@ -7,7 +7,7 @@ class Header extends Component {
     }
     state = {  }
     render() { 
-        return ( <div className='toto text-4xl'>Header content</div>);
+        return ( <div className='toto font-bold mr-4 text-4xl'>OnlinePrivacyPilot</div>);
     }
 }
  
