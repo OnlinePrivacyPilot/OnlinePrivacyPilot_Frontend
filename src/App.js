@@ -6,7 +6,9 @@ function App() {
   return (
     <>
     <Banner></Banner>
-    <GraphDisplay></GraphDisplay>
+    <div className='w-full h-screen flex flex-col justify-between min-h-screen'>
+      <GraphDisplay></GraphDisplay>
+    </div>
     </>
     
   );
