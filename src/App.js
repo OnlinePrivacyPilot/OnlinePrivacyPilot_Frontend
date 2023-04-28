@@ -10,7 +10,7 @@ function App() {
     <div className='flex w-full flex-col justify-center items-center min-h-screen'>
       <InputUSer></InputUSer>
     </div>
-    <div className='w-full flex flex-col justify-between '>
+    <div className='w-full flex flex-col justify-between'>
       <GraphDisplay></GraphDisplay>
     </div>
     </>
