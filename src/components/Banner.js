@@ -6,7 +6,7 @@ import { BanIcon, BeakerIcon, MenuIcon, XICon } from '@heroicons/react/outline'
 class Banner extends Component {
 
   state = {
-    nav: true
+    nav: false
   };
 
   onClick()
