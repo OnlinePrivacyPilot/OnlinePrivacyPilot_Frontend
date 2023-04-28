@@ -19,10 +19,10 @@ export const LoadGraph = () => {
 
 export const GraphDisplay = () => {
   return (
-    <div className='grid md:grid-cols-4 m-auto bg-slate-500'>
+    <div className='grid  m-auto bg-slate-500' style={{ height: '100vh', width: "100%" }}>
       <div className='sigma-container'></div>
       <div className='w-full m-0 p-4'>
-        <SigmaContainer style={{ height: "1000px", width: "100%" }}>
+        <SigmaContainer>
           <LoadGraph />
         </SigmaContainer>
       </div>
