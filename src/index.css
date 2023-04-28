@@ -10,6 +10,6 @@
   }
 
   button {
-    @apply text-white border bg-indigo-400 border-indigo-300
+    @apply text-white border bg-zinc-500 border-zinc-500
   }
 }
