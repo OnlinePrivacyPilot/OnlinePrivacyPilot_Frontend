@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class InputUSer extends Component {
     state = { 
         selectedOption: "option1", 
-        filter_button: false 
+        filter_button: true 
     }
     
     handleOptionChange = (e) => {
@@ -31,15 +31,13 @@ class InputUSer extends Component {
                     </span>
                 </div>
             <input className='box-border flex w-10 items-center justify-between'/>
-            <button className='px-4 py-2 rounded' onClick={() => this.handleFilterTypeButtonState()}>Select the type</button>          
+            <button className='px-4 py-2 rounded-full' onClick={() => this.handleOptionChange}>
+                <select className='bg-transparent' value={this.state.selectedOption} onChange={this.handleOptionChange}>
+                    <option value='option1'>name</option>
+                    <option value='option2'>username</option>
+                    <option value='option3'>e-mail</option>
+                </select></button>          
             </div>
-            {this.state.filter_button && (
-              <select className='mx-2' value={this.state.selectedOption} onChange={this.handleOptionChange}>
-                <option value='option1'>Option 1</option>
-                <option value='option2'>Option 2</option>
-                <option value='option3'>Option 3</option>
-              </select>
-            )}
         </div>
       
     );
