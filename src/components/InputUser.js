@@ -7,13 +7,15 @@ class InputUSer extends Component {
         selectedOption: "option1", 
         showFilterOptions: false ,
         showSearchOptions: false,
-        inputValue: ""
+        inputValue: "",
+        filterValue: "",
+        searchOptions: [
+            { label: 'active_search', checked: false },
+            { label: 'search_depth', checked: true },
+        ],
     }
     
-    handleOptionChange = (e) => {
-        this.setState({ selectedOption: e.target.value });
-    };
-
+    // Showing states
     handleFilterTypeButtonState = (e) => {
         this.setState(state => ({
             showFilterOptions: !state.showFilterOptions
@@ -26,14 +28,31 @@ class InputUSer extends Component {
           }));
     };
 
+    handleSearchOptionsChange = (updatedOptions) => {
+        this.setState({ searchOptions: updatedOptions });
+    };
+
     handleInputChange = (event) => {
         this.setState({ inputValue: event.target.value });
     };
 
-    handleSubmit = () => {    
+
+    handleSubmit = () => {
+        console.log("and here", this.state.searchOptions);
+        const selectedItems = Object.values(this.state.searchOptions)
+        .filter(item => {
+            console.log("toto",item)
+            if (item.checked == true){
+                return item.label
+            }
+        })
+        .map(item => item.label);
+        console.log("here", selectedItems);
+
         axios.get('http://127.0.0.1:5000/api', {
             params: {
                 target: this.state.inputValue,
+                filters: selectedItems.join(',')
             }
         })
         .then(response => {
@@ -103,7 +122,7 @@ class InputUSer extends Component {
             </div>
             {/* search options display depending on the state  active search, depth*/}
             <div className={!this.state.showSearchOptions ? 'hidden' :' bg-zinc-200 w-full px-8'}>
-                <CheckboxList />
+                <CheckboxList searchOptions={this.state.searchOptions} onSearchOptionsChange={this.handleSearchOptionsChange}/>
             </div>
         </div>
         

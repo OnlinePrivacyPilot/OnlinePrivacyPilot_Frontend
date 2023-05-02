@@ -4,10 +4,11 @@ class CheckboxList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      items: [
-        { id: 1, label: "Active search", checked: false },
-        { id: 2, label: "Search depth", checked: true },
-      ]
+      items: props.searchOptions.map((option, index) => ({
+        id: index + 1,
+        label: option.label,
+        checked: option.checked,
+      })),
     };
   }
 
@@ -18,6 +19,14 @@ class CheckboxList extends Component {
       }
       return item;
     });
+
+    const updatedOptions = updatedItems.map((item) => ({
+      label: item.label,
+      checked: item.checked,
+    }));
+
+    this.props.onSearchOptionsChange(updatedOptions);
+
     this.setState({ items: updatedItems });
   };
 
