@@ -37,21 +37,39 @@ class InputUSer extends Component {
     };
 
 
-    handleSubmit = () => {
+    handleSubmit = async () => {
         const selectedItems = Object.values(this.state.searchOptions)
         .filter(item => {
             if (item.checked == true){
-                return item.label
+                return item
             }
         })
-        .map(item => item.label);
 
-        axios.get('http://127.0.0.1:5000/api', {
-            params: {
-                target: this.state.inputValue,
-                filters: selectedItems.join(',')
+        console.log(selectedItems)
+
+        const params = {
+            target: this.state.inputValue,
+        };
+        selectedItems.forEach(item => {
+            if (item.checked) {
+              params[item.label] = 1;
             }
-        })
+          });
+        //.map(item => {item.label, item.check  ed});
+
+        // try{
+        //     await axios.get('http://127.0.0.1:5000/api/', {
+        //         params: {
+        //             target: this.state.inputValue,
+        //         }
+        //     })
+        // }
+        // catch(error){
+        //     console.error(error);
+        // }
+        console.log(params)
+
+        await axios.get('http://127.0.0.1:5000/api/', { params })
         .then(response => {
             console.log(response.data);
         })
