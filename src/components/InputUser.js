@@ -38,16 +38,13 @@ class InputUSer extends Component {
 
 
     handleSubmit = () => {
-        console.log("and here", this.state.searchOptions);
         const selectedItems = Object.values(this.state.searchOptions)
         .filter(item => {
-            console.log("toto",item)
             if (item.checked == true){
                 return item.label
             }
         })
         .map(item => item.label);
-        console.log("here", selectedItems);
 
         axios.get('http://127.0.0.1:5000/api', {
             params: {
