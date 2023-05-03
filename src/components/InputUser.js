@@ -55,11 +55,6 @@ class InputUSer extends Component {
         this.setState({ depthValue: event.target.value });
     };
 
-    handleDepthInput = (event) => {
-        this.setState({ depthValue: event.target.value });
-    };
-
-
     handleSubmit = async () => {
 
         const params = {
@@ -67,8 +62,6 @@ class InputUSer extends Component {
             depth: this.state.depthValue,
             active_search: this.state.activeSearch
         };
-
-        console.log(params)
 
         await axios.get('http://127.0.0.1:5000/api/', { params })
         .then(response => {
@@ -78,10 +71,6 @@ class InputUSer extends Component {
             console.error(error);
         });
     };
-
-    
-
-
     
     render() {
         document.addEventListener('DOMContentLoaded', () => {
@@ -164,7 +153,6 @@ class InputUSer extends Component {
                             </div>
                             <div class="flex h-6 items-center font-sans">
                                 <input id="depth" name="depth" type="range" min="0" max="10" value={this.state.depthValue} class="h-4 w-full rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={this.handleRangeChange}/>
-                                <label for="depth">Depth</label>
                                 <span id="depth-label" class="ml-2 ">{this.state.depthValue}</span>
                             </div>
                         </div>
@@ -179,7 +167,7 @@ class InputUSer extends Component {
                         </div>
                     </div> 
                 </div>
-        </div>
+            </div>
         </div>
         
       
