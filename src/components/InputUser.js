@@ -56,9 +56,14 @@ class InputUSer extends Component {
     };
 
     handleSubmit = async () => {
+        let inputValue = this.state.inputValue;
+
+        if (inputValue.includes(' ')) {
+            inputValue = inputValue.replace(/ /g, '%20');
+        }
 
         const params = {
-            target: this.state.inputValue,
+            target: inputValue,
             depth: this.state.depthValue,
             active_search: this.state.activeSearch
         };
