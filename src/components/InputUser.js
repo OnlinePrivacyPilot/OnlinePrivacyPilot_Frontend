@@ -3,17 +3,22 @@ import CheckboxList from './Searchoptions';
 import axios from 'axios'
 
 class InputUSer extends Component {
-    state = { 
-        selectedOption: "option1", 
-        showFilterOptions: false ,
-        showSearchOptions: false,
-        inputValue: "",
-        filterValue: "",
-        searchOptions: [
-            { label: 'active_search', checked: false },
-            { label: 'search_depth', checked: true },
-        ],
+    constructor(props){
+        super(props);
+
+        this.state = { 
+            selectedOption: "option1", 
+            showFilterOptions: false ,
+            showSearchOptions: false,
+            inputValue: "",
+            filterValue: "",
+            activeSearch: 0,
+            depthValue: 2
+        }
+
+        this.handleRangeChange = this.handleRangeChange.bind(this);
     }
+    
     
     // Showing states
     handleFilterTypeButtonState = (e) => {
@@ -28,45 +33,41 @@ class InputUSer extends Component {
           }));
     };
 
-    handleSearchOptionsChange = (updatedOptions) => {
-        this.setState({ searchOptions: updatedOptions });
-    };
+    handleSearchOptionsChange = (event) => {
+        const otherCheckbox = document.querySelector('#activeS');
 
+        otherCheckbox.addEventListener('change', () => {
+        if (otherCheckbox.checked) {
+            this.setState({ activeSearch: 1 });
+        } else {
+            this.setState({ activeSearch: 0 });
+        }
+        });
+        console.log(this.state.activeSearch)
+      };
+
+    //Value retrieving
     handleInputChange = (event) => {
         this.setState({ inputValue: event.target.value });
     };
 
+    handleRangeChange = (event) => {
+        this.setState({ depthValue: event.target.value });
+    };
+
+    handleDepthInput = (event) => {
+        this.setState({ depthValue: event.target.value });
+    };
+
 
     handleSubmit = async () => {
-        const selectedItems = Object.values(this.state.searchOptions)
-        .filter(item => {
-            if (item.checked == true){
-                return item
-            }
-        })
-
-        console.log(selectedItems)
 
         const params = {
             target: this.state.inputValue,
+            depth: this.state.depthValue,
+            active_search: this.state.activeSearch
         };
-        selectedItems.forEach(item => {
-            if (item.checked) {
-              params[item.label] = 1;
-            }
-          });
-        //.map(item => {item.label, item.check  ed});
 
-        // try{
-        //     await axios.get('http://127.0.0.1:5000/api/', {
-        //         params: {
-        //             target: this.state.inputValue,
-        //         }
-        //     })
-        // }
-        // catch(error){
-        //     console.error(error);
-        // }
         console.log(params)
 
         await axios.get('http://127.0.0.1:5000/api/', { params })
@@ -79,7 +80,21 @@ class InputUSer extends Component {
     };
 
     
+
+
+    
     render() {
+        document.addEventListener('DOMContentLoaded', () => {
+            const rangeInput = document.querySelector('#depth');
+            const depthLabel = document.querySelector('#depth-label');
+          
+            rangeInput.addEventListener('input', (event) => {
+              const depthValue = event.target.value;
+              depthLabel.textContent = depthValue;
+              rangeInput.value = depthValue;
+            });
+          });
+
         return (
         <div className="flex w-full flex-col justify-cente items-center" style={{ width: '100%' }}>
             {/* input box main filters */}
@@ -137,8 +152,34 @@ class InputUSer extends Component {
             </div>
             {/* search options display depending on the state  active search, depth*/}
             <div className={!this.state.showSearchOptions ? 'hidden' :' bg-zinc-200 w-full px-8'}>
-                <CheckboxList searchOptions={this.state.searchOptions} onSearchOptionsChange={this.handleSearchOptionsChange}/>
-            </div>
+                <h2 class="text-base font-semibold leading-7 text-gray-900">Search options</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">Here you can tune your choice regarding your preferences about the search.</p>
+
+                <div class="mt-10 space-y-2">
+                    <div class="mt-6 space-y-2">
+                        <div class="relative flex gap-x-3">
+                            <div class="text-sm leading-6">
+                                <label for="offers" class="font-medium text-gray-900">Search depth</label>
+                                <p class="text-gray-500">Here you can choose the level of recursion you want. In other words how depth the tool will investigate your fingerprint.</p>
+                            </div>
+                            <div class="flex h-6 items-center font-sans">
+                                <input id="depth" name="depth" type="range" min="0" max="10" value={this.state.depthValue} class="h-4 w-full rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={this.handleRangeChange}/>
+                                <label for="depth">Depth</label>
+                                <span id="depth-label" class="ml-2 ">{this.state.depthValue}</span>
+                            </div>
+                        </div>
+                        <div class="relative flex gap-x-3">
+                            <div class="flex h-6 items-center">
+                                <input id="activeS" name="offers" type="checkbox" value='active' class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onClick={this.handleSearchOptionsChange}/>
+                            </div>
+                            <div class="text-sm leading-6">
+                                <label for="activeS" class="font-medium text-gray-900">Active search</label>
+                                <p class="text-gray-500">To have the most exaustive overview of your data online, we propose an active search based on OSINT techniques. You can either let it desactived or activate it here</p>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+        </div>
         </div>
         
       
