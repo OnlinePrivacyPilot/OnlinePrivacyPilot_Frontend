@@ -45,17 +45,18 @@ export const GraphDisplay = (props) => {
       } else {
         return (
           <div>
-            <p>Hello</p>
+            <p>Here implement the list representation</p>
           </div>
         );
       }
     };
 
   return (
+    //TBD : change the a beacon?
     <div className="flex flex-wrap items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="inline-flex -space-x-px justify-around sm:hidden p-2">
-        <a href="#" className={`${showGraph === true? 'bg-indigo-300 text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-sm font-semibold' : 'text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'} rounded-md border relative z-10 inline-flex items-center px-4 py-2`} onClick={handleGraphClick}>Graph</a>
-        <a href="#" className={`${showGraph === false? 'bg-indigo-300 text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-sm font-semibold' : 'text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'} rounded-md border relative z-10 inline-flex items-center px-4 py-2`} onClick={handleListClick}>List</a>
+        <a href="#" className={`${showGraph === true? 'bg-indigo-600 text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-sm font-semibold' : 'text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'} rounded-md border relative z-10 inline-flex items-center px-4 py-2`} onClick={handleGraphClick}>Graph</a>
+        <a href="#" className={`${showGraph === false? 'bg-indigo-600 text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 text-sm font-semibold' : 'text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-20 focus:outline-offset-0'} rounded-md border relative z-10 inline-flex items-center px-4 py-2`} onClick={handleListClick}>List</a>
       </div>
       
       <div className="flex-wrap w-full justify-between">
