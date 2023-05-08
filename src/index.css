@@ -10,6 +10,10 @@
   }
 
   button {
-    @apply text-white border bg-zinc-500 border-zinc-500
+    @apply text-white border-2 bg-zinc-500 border-zinc-400
+  }
+
+  button:hover {
+    @apply text-white border-2 bg-zinc-400 border-zinc-400
   }
 }
