@@ -52,16 +52,6 @@ function Navbar() {
               </div>
             </div>
           </div>
-          <div class="inset-y-0 right-0 flex items-center pr-2 md:static md:inset-auto md:ml-6 md:pr-0">
-            <div class="ml-3">
-              <div>
-                <button type="button" class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                  <span class="sr-only">Open user menu</span>
-                  <img class="h-8 w-8 rounded-full" src="https://kernel.org/theme/images/logos/tux.png" alt="" />
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
       <div class={`${navExpanded === true ? 'md:hidden' : 'hidden md:hidden'}`} id="mobile-menu">
