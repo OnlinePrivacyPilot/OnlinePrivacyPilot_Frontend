@@ -54,7 +54,7 @@ function Navbar() {
           </div>
         </div>
       </div>
-      <div class={`${navExpanded === true ? 'md:hidden' : 'hidden md:hidden'}`} id="mobile-menu">
+      <div class={`${navExpanded === true ? 'md:hidden' : 'hidden md:hidden'} absolute bg-zinc-500 w-full`} id="mobile-menu">
         <div class="space-y-1 px-2 pb-3 pt-2">
         {navigation.map((item) => (
               <a
