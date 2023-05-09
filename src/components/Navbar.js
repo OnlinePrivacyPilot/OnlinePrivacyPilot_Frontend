@@ -17,7 +17,7 @@ function Navbar() {
 
   return (
     <nav class="sticky top-0 bg-zinc-500 z-10">
-      <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+      <div class="mx-auto max-w-screen-lg px-2 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="inset-y-0 left-0 flex items-center md:hidden">
             <button type="button" onClick={burgerClick} class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-zinc-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
@@ -32,7 +32,7 @@ function Navbar() {
           </div>
           <div class="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
             <div class="flex flex-shrink-0 items-center">
-              <h1 className='text-white text-xl font-bold mr-4 md:text-3xl'>OnlinePrivacyPilot.</h1>
+              <h1 className='text-white text-2xl font-bold mr-4 md:text-3xl'>OnlinePrivacyPilot.</h1>
             </div>
             <div class="hidden md:ml-6 md:block">
               <div class="flex space-x-4">
