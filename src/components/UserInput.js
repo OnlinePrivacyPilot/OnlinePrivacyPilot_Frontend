@@ -154,48 +154,40 @@ function FiltersViewer() {
 function SearchParameters() {
     const [showAPIOptions, setShowAPIOptions] = useState(false);
     const [depthValue, setDepthValue] = useState(2);
-
+    const [apiKey, setApiKey] = useState("");
+    const [cseId, setCseId] = useState("");
 
     const handleAPIClick = () => {
         setShowAPIOptions(!showAPIOptions);
+        enableInputs()
     };
 
     const handleRangeChange = (event) => {
         setDepthValue(event.target.value);
     };
+
+    const APIkey = document.getElementById('APIkey');
+    const CSEId = document.getElementById('CSEId');
     
-    // const checkBoxes = () => {
-    //     const APIkey = document.getElementById('APIkey');
-    //     const CSEId = document.getElementById('CSEId');
-    //     if(APIkey.checkValidity() && CSEId.checkValidity()) {
-    //         disableInput(true);
-    //     }
-    //     else {
-    //         disableInput(false);
-    //     }
-    // };
+    const disableInputs = (event) => {
+        const APIkeyValue = APIkey.value
+        const CSEIdValue = CSEId.value
+        if (apiKey.length === 5 && cseId.length === 5){
+            APIkey.disabled = true;
+            CSEId.disabled = true;
+        }
+        APIkey.value = APIkeyValue;
+        CSEId.value = CSEIdValue;
+    };
 
-    // function disableInput({ bool }){
-    //     const APIkey = document.getElementById('APIkey');
-    //     const CSEId = document.getElementById('CSEId');
-    //     const APIkeyValue = APIkey.value
-    //     const CSEIdValue = CSEId.value
-    //     APIkey.disabled = bool;
-    //     CSEId.disabled = bool;
-    //     APIkey.value = APIkeyValue;
-    //     CSEId.value = CSEIdValue;
-    // };
-
-    // useEffect(() => {
-    //     const APIkey = document.getElementById('APIkey');
-    //     const CSEId = document.getElementById('CSEId');
-    //     APIkey.addEventListener('blur', checkBoxes);
-    //     CSEId.addEventListener('blur', checkBoxes);
-    // });
+    const enableInputs = (event) => {
+        APIkey.disabled = false;
+        CSEId.disabled = false;
+    };
 
     return (
-        <div className='w-full h-10 bg-zinc-400'>
-            <div className='space-y-4 p-2'>
+        <div className='w-full h-15 bg-zinc-400 space-y-4 p-2'>
+            <div className=''>
                 <div className='flex-initial flex items-center gap-2 h-10'>
                     <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
                         <input type="checkbox" id="checkbox" name="APIkey" value="unchecked" onClick={handleAPIClick}/>
@@ -212,11 +204,10 @@ function SearchParameters() {
                         className={`${showAPIOptions === false ? 'hidden' : ''} block w-full rounded-md py-2 pl-2 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
                         placeholder="API key"
                         pattern="[a-zA-Z0-9]{17}"
-                        minLength="17"
-                        maxLength="17"
+                        onChange={(e) => {setApiKey(e.target.value)}}
                         required
                         />
-                        
+
                         <input
                             type="text"
                             name="CSEId"
@@ -225,13 +216,14 @@ function SearchParameters() {
                             placeholder="CSE id"
                             pattern="[a-zA-Z0-9]{17}"
                             maxLength="17"
+                            onChange={(e) => {setCseId(e.target.value)}}
                             required 
                             />
                                                
                     </form>
                     
                     <div className='hfull align-middle'>
-                        <button className={`${showAPIOptions === false ? 'hidden' : ''} rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`}>
+                        <button className={`${showAPIOptions === false ? 'hidden' : ''} rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={disableInputs}>
                         <span>Add</span>
                         </button>
                     </div>
