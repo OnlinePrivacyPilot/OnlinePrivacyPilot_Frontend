@@ -156,25 +156,28 @@ function SearchParameters() {
     const [depthValue, setDepthValue] = useState(2);
     const [apiKey, setApiKey] = useState("");
     const [cseId, setCseId] = useState("");
+    const APIkeyLength = 5;
+    const APIkey = document.getElementById('APIkey');
+    const CSEId = document.getElementById('CSEId');
+    const [APIkeyState, setApiKeyState] = useState(false);
+    const [CSEIdState, setCSEIdState] = useState(false);
 
-    const handleAPIClick = () => {
+    const handleAPIClick = (event) => {
         setShowAPIOptions(!showAPIOptions);
-        enableInputs()
+        setApiKeyState(false);
+        setCSEIdState(false);
     };
 
     const handleRangeChange = (event) => {
         setDepthValue(event.target.value);
     };
-
-    const APIkey = document.getElementById('APIkey');
-    const CSEId = document.getElementById('CSEId');
     
     const disableInputs = (event) => {
         const APIkeyValue = APIkey.value
         const CSEIdValue = CSEId.value
-        if (apiKey.length === 5 && cseId.length === 5){
-            APIkey.disabled = true;
-            CSEId.disabled = true;
+        if (apiKey.length === APIkeyLength && cseId.length === APIkeyLength){
+            setApiKeyState(true);
+            setCSEIdState(true);
         }
         APIkey.value = APIkeyValue;
         CSEId.value = CSEIdValue;
@@ -200,6 +203,7 @@ function SearchParameters() {
                        <input
                         type="text"
                         name="APIkey"
+                        disabled= {APIkeyState}
                         id="APIkey"
                         className={`${showAPIOptions === false ? 'hidden' : ''} block w-full rounded-md py-2 pl-2 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
                         placeholder="API key"
@@ -212,6 +216,7 @@ function SearchParameters() {
                             type="text"
                             name="CSEId"
                             id="CSEId"
+                            disabled= {CSEIdState}
                             className={`${showAPIOptions === false ? 'hidden' : ''} block rounded-md py-2 pl-2 pr-20 border-zinc-400 placeholder:text-zinc-400 border-2 w-full  text-gray-900`}
                             placeholder="CSE id"
                             pattern="[a-zA-Z0-9]{17}"
@@ -223,8 +228,8 @@ function SearchParameters() {
                     </form>
                     
                     <div className='hfull align-middle'>
-                        <button className={`${showAPIOptions === false ? 'hidden' : ''} rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={disableInputs}>
-                        <span>Add</span>
+                        <button className={`${showAPIOptions === false ? 'hidden' : ''} rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={disableInputs}>
+                        {APIkey.disabled === true? <span>Add</span> : <span>Modify</span>}
                         </button>
                     </div>
                 </div>
