@@ -44,30 +44,11 @@ function FilterInput() {
             <div className='space-y-2'>
                 <div className='flex-initial flex items-center gap-2'>
                     <Hint hintMessage="This is a hint." />
-                    <label htmlFor="mainFilter" className="font-medium truncate text-gray-900">
+                    <div className="font-medium truncate text-gray-900">
                         Main filter
-                    </label>
-                </div>
-                <div className="relative rounded-lg shadow-sm">
-                    <input
-                    type="text"
-                    name="mainFilterValue"
-                    id="mainFilterValue"
-                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
-                    placeholder="John Doe"
-                    />
-                    <div className="absolute inset-y-0 right-0 flex items-center">
-                        <select
-                            id="mainFilterType"
-                            name="mainFilterType"
-                            className="h-full rounded-lg text-base border-2 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                        >
-                            <option>Name</option>
-                            <option>Username</option>
-                            <option>Email</option>
-                        </select>
                     </div>
                 </div>
+                <MainFilterInput />
             </div>
             <div className='space-y-2'>
                 <div className='flex-initial flex items-center gap-2'>
@@ -76,87 +57,107 @@ function FilterInput() {
                         Other filter(s)
                     </div>
                 </div>
-                <div className='flex gap-4'>
-                    <div className="flex-1 relative rounded-md shadow-sm">
-                        <input
-                        type="text"
-                        name="otherFilterValue"
-                        id="otherFilterValue"
-                        className="block w-full rounded-md py-2 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
-                        placeholder="John Doe"
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center">
-                            <select
-                                id="otherFilterPositive"
-                                name="otherFilterPositive"
-                                className="h-full rounded-l-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                            >
-                                <option>Positive</option>
-                                <option>Negative</option>
-                            </select>
-                            <select
-                                id="otherFilterType"
-                                name="otherFilterType"
-                                className="h-full rounded-r-md text-sm border-2 border-l-0 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                            >
-                                <option>Name</option>
-                                <option>Username</option>
-                                <option>Email</option>
-                                <option>Location</option>
-                                <option>Phone</option>
-                                <option>Occupation</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className='flex items-center'>
-                        <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-red-800 bg-red-200 rounded-full'>
-                            <div className='absolute w-3 h-0.5 bg-red-800' ></div>
-                        </div>
-                    </div>
-                </div>
-                <div className='flex gap-4'>
-                    <div className="flex-1 relative rounded-md shadow-sm">
-                        <input
-                        type="text"
-                        name="otherFilterValue"
-                        id="otherFilterValue"
-                        className="block w-full rounded-md py-2 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
-                        placeholder="John Doe"
-                        />
-                        <div className="absolute inset-y-0 right-0 flex items-center">
-                            <select
-                                id="otherFilterPositive"
-                                name="otherFilterPositive"
-                                className="h-full rounded-l-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                            >
-                                <option>Positive</option>
-                                <option>Negative</option>
-                            </select>
-                            <select
-                                id="otherFilterType"
-                                name="otherFilterType"
-                                className="h-full rounded-r-md text-sm border-2 border-l-0 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                            >
-                                <option>Name</option>
-                                <option>Username</option>
-                                <option>Email</option>
-                                <option>Location</option>
-                                <option>Phone</option>
-                                <option>Occupation</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div className='flex items-center'>
-                        <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-800 bg-green-200 rounded-full'>
-                            <div className='absolute w-3 h-0.5 bg-green-800' ></div>
-                            <div className='absolute w-0.5 h-3 bg-green-800' ></div>
-                        </div>
-                    </div>
-                </div>
+                <OtherFilter isSubmitted={true} />
+                <OtherFilter isSubmitted={false} />
             </div>
         </div>
 
     )
+}
+
+
+function MainFilterInput() {
+    return (
+        <div className="relative rounded-lg shadow-sm">
+            <input
+            type="text"
+            name="mainFilterValue"
+            id="mainFilterValue"
+            className="block w-full text-xl rounded-lg py-4 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+            placeholder="John Doe"
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center">
+                <select
+                    id="mainFilterType"
+                    name="mainFilterType"
+                    className="h-full rounded-lg text-base border-2 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                >
+                    <option>Name</option>
+                    <option>Username</option>
+                    <option>Email</option>
+                </select>
+            </div>
+        </div>
+    )
+}
+
+function OtherFilter(props) {
+    return (
+        <div className='flex gap-4'>
+            <OtherFilterInput isSubmitted={props.isSubmitted} />
+            <OtherFilterButton isSubmitted={props.isSubmitted} />
+        </div>
+    );
+}
+
+function OtherFilterInput(status) {
+    return (
+        <div className="flex-1 relative rounded-md shadow-sm">
+            <input
+            type="text"
+            name="otherFilterValue"
+            id="otherFilterValue"
+            className="block w-full rounded-md py-2 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+            placeholder="John Doe"
+            disabled={status.isSubmitted}
+            />
+            <div className="absolute inset-y-0 right-0 flex items-center">
+                <select
+                    id="otherFilterPositive"
+                    name="otherFilterPositive"
+                    className="h-full rounded-l-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                    disabled={status.isSubmitted}
+                >
+                    <option>Positive</option>
+                    <option>Negative</option>
+                </select>
+                <select
+                    id="otherFilterType"
+                    name="otherFilterType"
+                    className="h-full rounded-r-md text-sm border-2 border-l-0 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                    disabled={status.isSubmitted}
+                >
+                    <option>Name</option>
+                    <option>Username</option>
+                    <option>Email</option>
+                    <option>Location</option>
+                    <option>Phone</option>
+                    <option>Occupation</option>
+                </select>
+            </div>
+        </div>
+    )
+}
+
+function OtherFilterButton(status) {
+    if (status.isSubmitted) {
+        return (
+            <div className='flex items-center'>
+                <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-red-800 bg-red-200 rounded-full'>
+                    <div className='absolute w-3 h-0.5 bg-red-800' ></div>
+                </div>
+            </div>
+        )
+    } else {
+        return (
+            <div className='flex items-center'>
+                <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-800 bg-green-200 rounded-full'>
+                    <div className='absolute w-3 h-0.5 bg-green-800' ></div>
+                    <div className='absolute w-0.5 h-3 bg-green-800' ></div>
+                </div>
+            </div>
+        )
+    }
 }
 
 function FiltersViewer() {
@@ -168,7 +169,7 @@ function FiltersViewer() {
     return (
         <div>
             <div className='w-full p-4 flex items-center justify-center'>
-                <button className={`${filtersView === true ? 'my-0' : 'mb-48'} md:basis-1/2 basis-full rounded-lg px-8 py-2`} onClick={toggleFiltersView}> {filtersView === true ? '↑ Hide' : '↓ Show'} all filters</button>
+                <button className={`md:basis-1/2 basis-full rounded-lg px-8 py-2`} onClick={toggleFiltersView}> {filtersView === true ? '↑ Hide' : '↓ Show'} all filters</button>
             </div>
             <div className={`${filtersView === true ? 'block' : 'hidden'} h-48 bg-zinc-400 border-2 rounded-lg p-4 overflow-y-scroll overflow-x-scroll`}>
                 <table className="table-fixed border-collapse border-spacing-2">
