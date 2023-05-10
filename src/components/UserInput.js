@@ -154,16 +154,16 @@ function FiltersViewer() {
 function SearchParameters() {
     const [showAPIOptions, setShowAPIOptions] = useState(false);
     const [depthValue, setDepthValue] = useState(2);
-    const [apiKey, setApiKey] = useState("");
-    const [cseId, setCseId] = useState("");
-    const [APIkeyState, setApiKeyState] = useState(false);
-    const [CSEIdState, setCSEIdState] = useState(false);
+    const [apiKeyValue, setApiKey] = useState("");
+    const [cseIdValue, setCseId] = useState("");
+    const [apiKeyState, setApiKeyState] = useState(false);
+    const [cseIdState, setCseIdState] = useState(false);
 
-    const APIkey = document.getElementById('APIkey');
-    const CSEId = document.getElementById('CSEId');
+    const apiKey = document.getElementById('apiKey');
+    const cseId = document.getElementById('cseId');
     
-    const APIkeyLength = 39;
-    const CSEIdLength = 17;
+    const apiKeyLength = 39;
+    const cseIdLength = 17;
 
     const handleAPIClick = (event) => {
         setShowAPIOptions(!showAPIOptions);
@@ -175,19 +175,17 @@ function SearchParameters() {
     };
     
     const disableInputs = (event) => {
-        const APIkeyValue = APIkey.value
-        const CSEIdValue = CSEId.value
-        if (apiKey.length === APIkeyLength && cseId.length === CSEIdLength){
+        if (apiKeyValue.length === apiKeyLength && cseIdValue.length === cseIdLength){
             setApiKeyState(true);
-            setCSEIdState(true);
+            setCseIdState(true);
         }
-        APIkey.value = APIkeyValue;
-        CSEId.value = CSEIdValue;
+        apiKey.value = apiKeyValue;
+        cseId.value = cseIdValue;
     };
 
     const enableInputs = (event) => {
         setApiKeyState(false);
-        setCSEIdState(false);
+        setCseIdState(false);
     };
 
     return (
@@ -195,19 +193,18 @@ function SearchParameters() {
             <div className=''>
                 <div className='flex-initial flex items-center gap-2 h-10'>
                     <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
-                        <input type="checkbox" id="checkbox" name="APIkey" value="unchecked" onClick={handleAPIClick}/>
+                        <input type="checkbox" id="checkbox" name="apiKey" value="unchecked" onClick={handleAPIClick}/>
                         <span className='font-medium truncate text-gray-900'>API</span>
                         <Hint hintMessage="Here include the description of the API field" />
                     </div>
                     
-                   
                     <form className='inline-flex gap-2'>
                        <input
                         type="text"
-                        name="APIkey"
-                        disabled= {APIkeyState}
-                        id="APIkey"
-                        size={17}
+                        name="apiKey"
+                        disabled= {apiKeyState}
+                        id="apiKey"
+                        size={apiKeyLength}
                         className={`${showAPIOptions === false ? 'hidden' : ''} block w-full rounded-md py-2 pl-2 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
                         placeholder="API key"
                         pattern="[a-zA-Z0-9]{17}"
@@ -217,15 +214,13 @@ function SearchParameters() {
 
                         <input
                             type="text"
-                            name="CSEId"
-                            id="CSEId"
-                            disabled= {CSEIdState}
+                            name="cseId"
+                            id="cseId"
+                            disabled= {cseIdState}
                             className={`${showAPIOptions === false ? 'hidden' : ''} block rounded-md py-2 pl-2 pr-20 border-zinc-400 placeholder:text-zinc-400 border-2 w-full  text-gray-900`}
                             placeholder="CSE id"
                             pattern="[a-zA-Z0-9]{17}"
-                            minLength={17}
-                            maxLength={17}
-                            size={17}
+                            size={cseIdLength}
                             onChange={(e) => {setCseId(e.target.value)}}
                             required 
                             />
@@ -233,8 +228,8 @@ function SearchParameters() {
                     </form>
                     
                     <div className='hfull align-middle'>
-                        <button className={`${showAPIOptions === false ? 'hidden' : ''} w-20 rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={APIkeyState === false? disableInputs : enableInputs}>
-                            {APIkeyState === false? 'Add' : 'Modify'}
+                        <button className={`${showAPIOptions === false ? 'hidden' : ''} w-20 rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={apiKeyState === false? disableInputs : enableInputs}>
+                            {apiKeyState === false? 'Add' : 'Modify'}
                         </button>
                     </div>
                 </div>
@@ -242,7 +237,7 @@ function SearchParameters() {
             <div className='space-y-2'>
                 <div className='flex-initial flex items-center gap-2'>
                     <div className="font-medium truncate text-gray-900">
-                        <input type="checkbox" id="APIkey" name="APIkey" value="unchecked" />
+                        <input type="checkbox" id="apiKey" name="apiKey" value="unchecked" />
                         <span class="ml-1">Active search</span>
                     </div>
                     <Hint hintMessage="Here include the description of the active search field" />
