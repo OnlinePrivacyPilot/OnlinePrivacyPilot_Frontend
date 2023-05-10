@@ -152,9 +152,115 @@ function FiltersViewer() {
 }
 
 function SearchParameters() {
+    const [showAPIOptions, setShowAPIOptions] = useState(false);
+    const [depthValue, setDepthValue] = useState(2);
+
+
+    const handleAPIClick = () => {
+        setShowAPIOptions(!showAPIOptions);
+    };
+
+    const handleRangeChange = (event) => {
+        setDepthValue(event.target.value);
+    };
+    
+    // const checkBoxes = () => {
+    //     const APIkey = document.getElementById('APIkey');
+    //     const CSEId = document.getElementById('CSEId');
+    //     if(APIkey.checkValidity() && CSEId.checkValidity()) {
+    //         disableInput(true);
+    //     }
+    //     else {
+    //         disableInput(false);
+    //     }
+    // };
+
+    // function disableInput({ bool }){
+    //     const APIkey = document.getElementById('APIkey');
+    //     const CSEId = document.getElementById('CSEId');
+    //     const APIkeyValue = APIkey.value
+    //     const CSEIdValue = CSEId.value
+    //     APIkey.disabled = bool;
+    //     CSEId.disabled = bool;
+    //     APIkey.value = APIkeyValue;
+    //     CSEId.value = CSEIdValue;
+    // };
+
+    // useEffect(() => {
+    //     const APIkey = document.getElementById('APIkey');
+    //     const CSEId = document.getElementById('CSEId');
+    //     APIkey.addEventListener('blur', checkBoxes);
+    //     CSEId.addEventListener('blur', checkBoxes);
+    // });
+
     return (
         <div className='w-full h-10 bg-zinc-400'>
-            
+            <div className='space-y-4 p-2'>
+                <div className='flex-initial flex items-center gap-2 h-10'>
+                    <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
+                        <input type="checkbox" id="checkbox" name="APIkey" value="unchecked" onClick={handleAPIClick}/>
+                        <span className='font-medium truncate text-gray-900'>API</span>
+                        <Hint hintMessage="Here include the description of the API field" />
+                    </div>
+                    
+                   
+                    <form className='inline-flex gap-2'>
+                       <input
+                        type="text"
+                        name="APIkey"
+                        id="APIkey"
+                        className={`${showAPIOptions === false ? 'hidden' : ''} block w-full rounded-md py-2 pl-2 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
+                        placeholder="API key"
+                        pattern="[a-zA-Z0-9]{17}"
+                        minLength="17"
+                        maxLength="17"
+                        required
+                        />
+                        
+                        <input
+                            type="text"
+                            name="CSEId"
+                            id="CSEId"
+                            className={`${showAPIOptions === false ? 'hidden' : ''} block rounded-md py-2 pl-2 pr-20 border-zinc-400 placeholder:text-zinc-400 border-2 w-full  text-gray-900`}
+                            placeholder="CSE id"
+                            pattern="[a-zA-Z0-9]{17}"
+                            maxLength="17"
+                            required 
+                            />
+                                               
+                    </form>
+                    
+                    <div className='hfull align-middle'>
+                        <button className={`${showAPIOptions === false ? 'hidden' : ''} rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`}>
+                        <span>Add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div className='space-y-2'>
+                <div className='flex-initial flex items-center gap-2'>
+                    <div className="font-medium truncate text-gray-900">
+                        <input type="checkbox" id="APIkey" name="APIkey" value="unchecked" />
+                        <span class="ml-1">Active search</span>
+                    </div>
+                    <Hint hintMessage="Here include the description of the active search field" />
+                </div>
+            </div>
+            <div className='space-y-2'>
+                <div className='flex-initial flex items-center gap-2'>
+                    <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
+                        <div className="font-medium truncate text-gray-900">
+                            Depth
+                        </div>
+                        <Hint hintMessage="Here include the description of the active search field" />
+                    </div>
+                    <div class="flex w-50 items-center font-sans gap-2">
+                        <input id="depth" name="depth" type="range" min="1" max="6" value={depthValue} class="h-4 w-full rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
+                        <label for="depth">{depthValue}</label>
+                    </div>
+                </div>
+                
+            </div>
         </div>
     )
 }
