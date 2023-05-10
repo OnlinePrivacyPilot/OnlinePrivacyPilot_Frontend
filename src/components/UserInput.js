@@ -17,15 +17,15 @@ function UserInput() {
     );
 }
 
-function Hint({hintMessage}) {
+function Hint({children}) {
     return (
         <div className='group relative'>
-            <div className='border-2 border-solid border-zinc-800 h-5 leading-4 w-5 rounded-full text-center font-sm text-zinc-800'>
+            <div className='border-2 border-solid border-zinc-800 h-7 leading-6 w-7 rounded-full text-center font-sm text-zinc-800'>
                 i
             </div>
-            <div class="pointer-events-none absolute opacity-0 transition-opacity group-hover:opacity-100 z-10 py-2 md:max-w-xl max-w-sm w-max">
-                <div className='bg-white p-2 rounded-lg border-2 border-solid border-zinc-300'>
-                    {hintMessage}
+            <div className='absolute left-9 bottom-0 top-0 opacity-0 transition-opacity group-hover:opacity-100 z-10 md:max-w-xl max-w-sm w-max'>
+                <div className='bg-white p-1 text-sm rounded-lg border-2 border-solid border-zinc-300'>
+                    {children}
                 </div>
             </div>
         </div>
@@ -43,7 +43,7 @@ function FilterInput() {
         <div className='w-full space-y-8'>
             <div className='space-y-2'>
                 <div className='flex-initial flex items-center gap-2'>
-                    <Hint hintMessage="This is a hint." />
+                    <Hint>This is a hint.</Hint>
                     <div className="font-medium truncate text-gray-900">
                         Main filter
                     </div>
@@ -52,7 +52,7 @@ function FilterInput() {
             </div>
             <div className='space-y-2'>
                 <div className='flex-initial flex items-center gap-2'>
-                    <Hint hintMessage="This is a hint." />
+                    <Hint>This is a hint.</Hint>
                     <div className="font-medium truncate text-gray-900">
                         Other filter(s)
                     </div>
@@ -263,7 +263,7 @@ function SearchParameters() {
                     <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
                         <input type="checkbox" id="checkbox" name="apiKey" value="unchecked" onClick={handleAPIClick}/>
                         <span className='font-medium truncate text-gray-900'>API</span>
-                        <Hint hintMessage="Here include the description of the API field" />
+                        <Hint>This is a hint.</Hint>
                     </div>
                     
                     <form className='inline-flex gap-2'>
@@ -308,7 +308,7 @@ function SearchParameters() {
                         <input type="checkbox" id="apiKey" name="apiKey" value="unchecked" />
                         <span class="ml-1">Active search</span>
                     </div>
-                    <Hint hintMessage="Here include the description of the active search field" />
+                    <Hint>This is a hint.</Hint>
                 </div>
             </div>
             <div className='space-y-2'>
@@ -317,7 +317,7 @@ function SearchParameters() {
                         <div className="font-medium truncate text-gray-900">
                             Depth
                         </div>
-                        <Hint hintMessage="Here include the description of the active search field" />
+                        <Hint>This is a hint.</Hint>
                     </div>
                     <div class="flex w-50 items-center font-sans gap-2">
                         <input id="depth" name="depth" type="range" min="1" max="6" value={depthValue} class="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
