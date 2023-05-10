@@ -156,16 +156,18 @@ function SearchParameters() {
     const [depthValue, setDepthValue] = useState(2);
     const [apiKey, setApiKey] = useState("");
     const [cseId, setCseId] = useState("");
-    const APIkeyLength = 5;
-    const APIkey = document.getElementById('APIkey');
-    const CSEId = document.getElementById('CSEId');
     const [APIkeyState, setApiKeyState] = useState(false);
     const [CSEIdState, setCSEIdState] = useState(false);
 
+    const APIkey = document.getElementById('APIkey');
+    const CSEId = document.getElementById('CSEId');
+    
+    const APIkeyLength = 39;
+    const CSEIdLength = 17;
+
     const handleAPIClick = (event) => {
         setShowAPIOptions(!showAPIOptions);
-        setApiKeyState(false);
-        setCSEIdState(false);
+        enableInputs();
     };
 
     const handleRangeChange = (event) => {
@@ -175,7 +177,7 @@ function SearchParameters() {
     const disableInputs = (event) => {
         const APIkeyValue = APIkey.value
         const CSEIdValue = CSEId.value
-        if (apiKey.length === APIkeyLength && cseId.length === APIkeyLength){
+        if (apiKey.length === APIkeyLength && cseId.length === CSEIdLength){
             setApiKeyState(true);
             setCSEIdState(true);
         }
@@ -184,8 +186,8 @@ function SearchParameters() {
     };
 
     const enableInputs = (event) => {
-        APIkey.disabled = false;
-        CSEId.disabled = false;
+        setApiKeyState(false);
+        setCSEIdState(false);
     };
 
     return (
@@ -205,6 +207,7 @@ function SearchParameters() {
                         name="APIkey"
                         disabled= {APIkeyState}
                         id="APIkey"
+                        size={17}
                         className={`${showAPIOptions === false ? 'hidden' : ''} block w-full rounded-md py-2 pl-2 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
                         placeholder="API key"
                         pattern="[a-zA-Z0-9]{17}"
@@ -220,7 +223,9 @@ function SearchParameters() {
                             className={`${showAPIOptions === false ? 'hidden' : ''} block rounded-md py-2 pl-2 pr-20 border-zinc-400 placeholder:text-zinc-400 border-2 w-full  text-gray-900`}
                             placeholder="CSE id"
                             pattern="[a-zA-Z0-9]{17}"
-                            maxLength="17"
+                            minLength={17}
+                            maxLength={17}
+                            size={17}
                             onChange={(e) => {setCseId(e.target.value)}}
                             required 
                             />
@@ -228,8 +233,8 @@ function SearchParameters() {
                     </form>
                     
                     <div className='hfull align-middle'>
-                        <button className={`${showAPIOptions === false ? 'hidden' : ''} rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={disableInputs}>
-                        {APIkey.disabled === true? <span>Add</span> : <span>Modify</span>}
+                        <button className={`${showAPIOptions === false ? 'hidden' : ''} w-20 rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={APIkeyState === false? disableInputs : enableInputs}>
+                            {APIkeyState === false? 'Add' : 'Modify'}
                         </button>
                     </div>
                 </div>
@@ -252,7 +257,7 @@ function SearchParameters() {
                         <Hint hintMessage="Here include the description of the active search field" />
                     </div>
                     <div class="flex w-50 items-center font-sans gap-2">
-                        <input id="depth" name="depth" type="range" min="1" max="6" value={depthValue} class="h-4 w-full rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
+                        <input id="depth" name="depth" type="range" min="1" max="6" value={depthValue} class="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
                         <label for="depth">{depthValue}</label>
                     </div>
                 </div>
