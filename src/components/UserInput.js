@@ -48,19 +48,19 @@ function FilterInput() {
                         Main filter
                     </label>
                 </div>
-                <div className="relative rounded-md shadow-sm">
+                <div className="relative rounded-lg shadow-sm">
                     <input
                     type="text"
-                    name="price"
-                    id="price"
-                    className="block w-full rounded-md py-2 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+                    name="mainFilterValue"
+                    id="mainFilterValue"
+                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                     placeholder="John Doe"
                     />
                     <div className="absolute inset-y-0 right-0 flex items-center">
                         <select
-                            id="mainFilter"
-                            name="mainFilter"
-                            className="h-full rounded-md text-sm ring-2 ring-inset ring-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                            id="mainFilterType"
+                            name="mainFilterType"
+                            className="h-full rounded-lg text-base border-2 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                         >
                             <option>Name</option>
                             <option>Username</option>
@@ -80,16 +80,24 @@ function FilterInput() {
                     <div className="flex-1 relative rounded-md shadow-sm">
                         <input
                         type="text"
-                        name="price"
-                        id="price"
+                        name="otherFilterValue"
+                        id="otherFilterValue"
                         className="block w-full rounded-md py-2 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                         placeholder="John Doe"
                         />
                         <div className="absolute inset-y-0 right-0 flex items-center">
                             <select
-                                id="mainFilter"
-                                name="mainFilter"
-                                className="h-full rounded-md text-sm ring-2 ring-inset ring-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                                id="otherFilterPositive"
+                                name="otherFilterPositive"
+                                className="h-full rounded-l-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                            >
+                                <option>Positive</option>
+                                <option>Negative</option>
+                            </select>
+                            <select
+                                id="otherFilterType"
+                                name="otherFilterType"
+                                className="h-full rounded-r-md text-sm border-2 border-l-0 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                             >
                                 <option>Name</option>
                                 <option>Username</option>
@@ -110,16 +118,24 @@ function FilterInput() {
                     <div className="flex-1 relative rounded-md shadow-sm">
                         <input
                         type="text"
-                        name="price"
-                        id="price"
+                        name="otherFilterValue"
+                        id="otherFilterValue"
                         className="block w-full rounded-md py-2 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                         placeholder="John Doe"
                         />
                         <div className="absolute inset-y-0 right-0 flex items-center">
                             <select
-                                id="mainFilter"
-                                name="mainFilter"
-                                className="h-full rounded-md text-sm ring-2 ring-inset ring-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                                id="otherFilterPositive"
+                                name="otherFilterPositive"
+                                className="h-full rounded-l-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                            >
+                                <option>Positive</option>
+                                <option>Negative</option>
+                            </select>
+                            <select
+                                id="otherFilterType"
+                                name="otherFilterType"
+                                className="h-full rounded-r-md text-sm border-2 border-l-0 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                             >
                                 <option>Name</option>
                                 <option>Username</option>
