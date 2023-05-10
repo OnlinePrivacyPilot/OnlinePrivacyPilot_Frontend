@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-/*Add padding for every element of the navbar's list*/
 @layer base {
   li {
     @apply p-4
@@ -16,4 +14,9 @@
   button:hover {
     @apply text-white border-2 bg-zinc-400 border-zinc-400
   }
+
+  th, td {
+    @apply p-2 border
+  }
+
 }

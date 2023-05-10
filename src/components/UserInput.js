@@ -4,12 +4,12 @@ function UserInput() {
     return (
         <div className='bg-zinc-100 min-h-screen py-16 px-4'>
             <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
-                <div className='inline space-y-8 bg-zinc-300 p-4 basis-full lg:basis-3/4'>
+                <div className='inline space-y-8 bg-zinc-300 p-4 basis-full lg:basis-3/4 max-w-full'>
                     <FilterInput />
                     <FiltersViewer />
                     <SearchParameters />
                 </div>
-                <div className='bg-zinc-300 p-4 basis-full lg:basis-1/4 flex items-center justify-center'>
+                <div className='bg-zinc-300 p-4 basis-full lg:basis-1/4  max-w-full flex items-center justify-center'>
                 <SearchButton />
                 </div>
             </div>
@@ -144,9 +144,60 @@ function FilterInput() {
 }
 
 function FiltersViewer() {
-    return (
-        <div className='w-full h-10 bg-zinc-400'>
+    const [filtersView, setFiltersView] = useState(false);
 
+    const toggleFiltersView = () => {
+        setFiltersView(!filtersView);
+    };
+    return (
+        <div>
+            <div className='w-full p-4 flex items-center justify-center'>
+                <button className={`${filtersView === true ? 'my-0' : 'mb-48'} md:basis-1/2 basis-full rounded-lg px-8 py-2`} onClick={toggleFiltersView}> {filtersView === true ? '↑ Hide' : '↓ Show'} all filters</button>
+            </div>
+            <div className={`${filtersView === true ? 'block' : 'hidden'} h-48 bg-zinc-400 border-2 rounded-lg p-4 overflow-y-scroll overflow-x-scroll`}>
+                <table className="table-fixed border-collapse border-spacing-2">
+                    <thead className='bg-zinc-500 text-white'>
+                        <tr>
+                        <th>Value</th>
+                        <th>Type</th>
+                        <th>Method</th>
+                        <th style={{width:80}}>Positive</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        <td>Paris</td>
+                        <td>location</td>
+                        <td>user_input</td>
+                        <td className='text-center'>✅</td>
+                        </tr>
+                        <tr>
+                        <td>Engineer</td>
+                        <td>occupation</td>
+                        <td>user_input</td>
+                        <td className='text-center'>✅</td>
+                        </tr>
+                        <tr>
+                        <td>Paul</td>
+                        <td>name</td>
+                        <td>user_input</td>
+                        <td className='text-center'>❎</td>
+                        </tr>
+                        <tr>
+                        <td>Jack454</td>
+                        <td>username</td>
+                        <td>user_input</td>
+                        <td className='text-center'>❎</td>
+                        </tr>
+                        <tr>
+                        <td>https://example.com/#thisIsALongURLToShowTruncateMethod</td>
+                        <td>url</td>
+                        <td>user_input</td>
+                        <td className='text-center'>❎</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }
