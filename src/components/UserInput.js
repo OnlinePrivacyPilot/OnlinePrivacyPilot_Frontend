@@ -6,11 +6,11 @@ function UserInput() {
             <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
                 <div className='inline space-y-8 bg-zinc-300 p-4 basis-full lg:basis-3/4 max-w-full'>
                     <FilterInput />
-                    <FiltersViewer />
                     <SearchParameters />
+                    <FiltersViewer />
                 </div>
-                <div className='bg-zinc-300 p-4 basis-full lg:basis-1/4  max-w-full flex items-center justify-center'>
-                <SearchButton />
+                <div className='bg-zinc-300 p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
+                    <SearchButton />
                 </div>
             </div>
         </div>
