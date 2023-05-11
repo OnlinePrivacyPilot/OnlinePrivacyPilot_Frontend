@@ -255,9 +255,9 @@ function SearchParameters() {
     };
 
     return (
-        <div className='w-full h-15 bg-zinc-400 space-y-4 p-2'>
-            <div className='flex items-center gap-4 h-10'>
-                <div className="items-center align-middle inline-flex gap-2">
+        <div className='w-full space-y-4'>
+            <div className='flex items-center gap-4 max-h-6'>
+                <div className="flex-initial flex items-center gap-2">
                     <Hint>This is a hint.</Hint>
                     <input type="checkbox" id="checkbox" name="apiKey" checked={apiUse} onClick={handleAPIClick}/>
                     <span className='font-medium truncate text-gray-900'>API</span>
@@ -280,7 +280,7 @@ function SearchParameters() {
                         name="cseId"
                         id="cseId"
                         disabled= {cseIdState}
-                        className='block rounded-md p-2 border-zinc-400 placeholder:text-zinc-400 border-2 w-full text-gray-900'
+                        className='block w-full rounded-md p-2 border-zinc-400 placeholder:text-zinc-400 border-2 text-gray-900'
                         placeholder="CSE Id"
                         size={cseIdLength}
                         onChange={handleCseValue}
@@ -292,30 +292,25 @@ function SearchParameters() {
                     />
                 </div>
             </div>
-            <div className='space-y-2 sm:w-1/3'>
-                <div className='flex-initial flex items-center gap-2'>
-                    <Hint>This is a hint.</Hint>
-                    <div className="font-medium truncate text-gray-900">
-                        <input type="checkbox" id="apiKey" name="apiKey" checked={activeUse} onClick={handleActiveClick} />
-                        <span class="ml-1">Active search</span>
-                    </div>
-                    
-                </div>
-            </div>
-            <div className='space-y-2'>
-                <div className='flex-initial flex items-center gap-2'>
-                    <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
-                        <Hint>This is a hint.</Hint>
-                        <div className="font-medium truncate text-gray-900">
-                            Depth
-                        </div>   
-                    </div>
-                    <div class="flex w-50 items-center font-sans gap-2">
-                        <input id="depth" name="depth" type="range" min="1" max="6" value={depth} class="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
-                        <label for="depth">{depth}</label>
-                    </div>
+            <div className='flex-initial flex items-center gap-2'>
+                <Hint>This is a hint.</Hint>
+                <div className="font-medium truncate text-gray-900">
+                    <input type="checkbox" id="apiKey" name="apiKey" checked={activeUse} onClick={handleActiveClick} />
+                    <span class="ml-1">Active search</span>
                 </div>
                 
+            </div>
+            <div className='flex-initial flex items-center gap-2'>
+                <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
+                    <Hint>This is a hint.</Hint>
+                    <div className="font-medium truncate text-gray-900">
+                        Depth
+                    </div>   
+                </div>
+                <div class="flex w-50 items-center font-sans gap-2">
+                    <input id="depth" name="depth" type="range" min="1" max="6" value={depth} class="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
+                    <label for="depth">{depth}</label>
+                </div>
             </div>
         </div>
     )
@@ -324,11 +319,14 @@ function SearchParameters() {
 function Hint({children}) {
     return (
         <div className='group relative'>
-            <div className='border-2 border-solid border-zinc-800 h-7 leading-6 w-7 rounded-full text-center font-sm text-zinc-800'>
-                i
+            <div className='w-5 h-5 border-2 border-solid border-zinc-900 bg-zinc-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-zinc-400'>
+                <div className='mt-[3px]'>
+                    <div className='ml-[7px] w-0.5 h-0.5 bg-zinc-900 rounded mb-px' ></div>
+                    <div className='ml-[7px] w-0.5 h-[7px] bg-zinc-900 rounded' ></div>
+                </div>
             </div>
-            <div className='absolute left-9 bottom-0 top-0 hidden opacity-0 transition-opacity group-hover:block group-hover:opacity-100 z-10 md:max-w-xl max-w-sm w-max'>
-                <div className='bg-white p-1 text-sm rounded-lg border-2 border-solid border-zinc-300'>
+            <div className='absolute left-7 bottom-0 top-[-10px] hidden opacity-0 transition-opacity group-hover:block group-hover:opacity-100 z-10 md:max-w-xl max-w-sm w-max'>
+                <div className='bg-white p-2 text-sm rounded-lg border-2 border-solid border-zinc-300'>
                     {children}
                 </div>
             </div>
@@ -343,8 +341,8 @@ function ActionButton({style, action}) {
                 return (
                     <div className='flex items-center' onClick={action}>
                         <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-900 bg-green-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-green-400'>
-                            <div className='absolute w-3 h-0.5 bg-green-900' ></div>
-                            <div className='absolute w-0.5 h-3 bg-green-900' ></div>
+                            <div className='absolute w-3 h-0.5 bg-green-900 rounded' ></div>
+                            <div className='absolute w-0.5 h-3 bg-green-900 rounded' ></div>
                         </div>
                     </div>
                 )
@@ -354,8 +352,8 @@ function ActionButton({style, action}) {
                     <div className='flex items-center' onClick={action}>
                         <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-yellow-900 bg-yellow-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-yellow-400'>
                             <div className='rotate-45'>
-                                <div className='w-[3px] h-3 bg-yellow-900 mb-px' ></div>
-                                <div className='w-[3px] h-[3px] bg-yellow-900 rounded-b-full' ></div>
+                                <div className='w-[3px] h-2.5 bg-yellow-900 mb-px rounded-t' ></div>
+                                <div className='w-[3px] h-[3px] bg-yellow-900 rounded-b' ></div>
                             </div>
                         </div>
                     </div>
@@ -365,7 +363,7 @@ function ActionButton({style, action}) {
                 return (
                     <div className='flex items-center' onClick={action}>
                         <div className='relative flex items-center justify-center w-6 h-6 border-2 border-solid border-red-900 bg-red-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-1 hover:ring-inset hover:ring-red-400'>
-                            <div className='absolute w-2 h-0.5 bg-red-900' ></div>
+                            <div className='absolute w-2.5 h-0.5 bg-red-900 rounded' ></div>
                         </div>
                     </div>
                 )
