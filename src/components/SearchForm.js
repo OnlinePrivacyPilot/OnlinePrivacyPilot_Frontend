@@ -263,51 +263,50 @@ function SearchParameters() {
 
     return (
         <div className='w-full h-15 bg-zinc-400 space-y-4 p-2'>
-            <div className='max-w-full'>
-                <div className='flex-initial flex items-center gap-2 h-10'>
-                    <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
-                        <Hint>This is a hint.</Hint>
-                        <input type="checkbox" id="checkbox" name="apiKey" checked={apiUse} onClick={handleAPIClick}/>
-                        <span className='font-medium truncate text-gray-900'>API</span>
-                    </div>
-                    
+            <div className=' flex items-center gap-4 h-10'>
+                <div className="items-center align-middle inline-flex gap-2">
+                    <Hint>This is a hint.</Hint>
+                    <input type="checkbox" id="checkbox" name="apiKey" checked={apiUse} onClick={handleAPIClick}/>
+                    <span className='font-medium truncate text-gray-900'>API</span>
+                </div>
+                
+                <div>
                     <form className='inline-flex gap-2'>
-                       <input
-                        type="text"
-                        name="apiKey"
-                        disabled= {apiKeyState}
-                        id="apiKey"
-                        size={apiKeyLength}
-                        className={`${apiUse === false ? 'hidden' : ''} block w-full rounded-md py-2 pl-2 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
-                        placeholder="API key"
-                        pattern="[a-zA-Z0-9]{17}"
-                        onChange={handleApiValue}
-                        required
-                        />
+                    <input
+                    type="text"
+                    name="apiKey"
+                    disabled= {apiKeyState}
+                    id="apiKey"
+                    size={apiKeyLength}
+                    className={`${apiUse === false ? 'hidden' : ''} block w-full rounded-md p-2 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
+                    placeholder="API key"
+                    pattern="[a-zA-Z0-9]{17}"
+                    onChange={handleApiValue}
+                    required
+                    />
 
-                        <input
-                            type="text"
-                            name="cseId"
-                            id="cseId"
-                            disabled= {cseIdState}
-                            className={`${apiUse === false ? 'hidden' : ''} block rounded-md py-2 pl-2 pr-20 border-zinc-400 placeholder:text-zinc-400 border-2 w-full  text-gray-900`}
-                            placeholder="CSE Id"
-                            pattern="[a-zA-Z0-9]{17}"
-                            size={cseIdLength}
-                            onChange={handleCseValue}
-                            required 
-                        />
-                                               
-                    </form>
-                    
-                    <div className='hfull align-middle'>
-                        <button className={`${apiUse === false ? 'hidden' : ''} w-20 rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={apiKeyState === false? disableInputs : enableInputs}>
-                            {apiKeyState === false? 'Add' : 'Modify'}
-                        </button>
-                    </div>
+                    <input
+                        type="text"
+                        name="cseId"
+                        id="cseId"
+                        disabled= {cseIdState}
+                        className={`${apiUse === false ? 'hidden' : ''} block rounded-md p-2 border-zinc-400 placeholder:text-zinc-400 border-2 w-full text-gray-900`}
+                        placeholder="CSE Id"
+                        pattern="[a-zA-Z0-9]{17}"
+                        size={cseIdLength}
+                        onChange={handleCseValue}
+                        required 
+                    />
+                                            
+                </form>
+                </div>
+                <div className='hfull align-middle'>
+                    <button className={`${apiUse === false ? 'hidden' : ''} rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={apiKeyState === false? disableInputs : enableInputs}>
+                        {apiKeyState === false? 'Add' : 'Modify'}
+                    </button>
                 </div>
             </div>
-            <div className='space-y-2'>
+            <div className='space-y-2 sm:w-1/3'>
                 <div className='flex-initial flex items-center gap-2'>
                     <Hint>This is a hint.</Hint>
                     <div className="font-medium truncate text-gray-900">
