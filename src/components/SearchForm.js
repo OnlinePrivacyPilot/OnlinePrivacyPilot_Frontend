@@ -75,7 +75,7 @@ function AddFilter() {
                 </div>
                 <div className='flex items-center'>
                     <div 
-                        className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-800 bg-green-200 rounded-full'
+                        className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-900 bg-green-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-green-400'
                         onClick={() => {
                             setValue('');
                             dispatch({
@@ -87,8 +87,8 @@ function AddFilter() {
                             });
                         }}
                     >
-                        <div className='absolute w-3 h-0.5 bg-green-800' ></div>
-                        <div className='absolute w-0.5 h-3 bg-green-800' ></div>
+                        <div className='absolute w-3 h-0.5 bg-green-900' ></div>
+                        <div className='absolute w-0.5 h-3 bg-green-900' ></div>
                     </div>
                 </div>
             </div>
@@ -189,8 +189,8 @@ function Filter({filter}) {
                             });
                         }}    
                     >
-                        <div className='relative flex items-center justify-center w-6 h-6 border-2 border-solid border-red-800 bg-red-200 rounded-full'>
-                            <div className='absolute w-2 h-0.5 bg-red-800' ></div>
+                        <div className='relative flex items-center justify-center w-6 h-6 border-2 border-solid border-red-900 bg-red-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-1 hover:ring-inset hover:ring-red-400'>
+                            <div className='absolute w-2 h-0.5 bg-red-900' ></div>
                         </div>
                     </div>
                 </div>
