@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { FiltersProvider, useFilters, useFiltersDispatch } from '../contexts/FiltersContext'
-
+import { SearchParametersProvider, useSearchParameters, SearchParametersContext } from '../contexts/SearchParametersContext';
 
 export default function SearchForm() {
     return (
@@ -11,8 +11,10 @@ export default function SearchForm() {
                     <FiltersProvider>
                         <AddFilter />
                         <FiltersList />
+                        <SearchParametersProvider>
+                            <SearchParameters />
+                        </SearchParametersProvider>
                     </FiltersProvider>
-                    <SearchParameters />
                 </div>
                 <div className='bg-zinc-300 p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
                     <SearchButton />
@@ -198,50 +200,62 @@ function Filter({filter}) {
 }
 
 function SearchParameters() {
-    const [showAPIOptions, setShowAPIOptions] = useState(false);
-    const [depthValue, setDepthValue] = useState(2);
-    const [apiKeyValue, setApiKey] = useState("");
-    const [cseIdValue, setCseId] = useState("");
+    const { apiState: [apiUse, setApiUse], activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [ ,setApiKeyValue], cseIdState: [ ,setCseIdValue] } = useSearchParameters();
     const [apiKeyState, setApiKeyState] = useState(false);
     const [cseIdState, setCseIdState] = useState(false);
 
-    const apiKey = document.getElementById('apiKey');
-    const cseId = document.getElementById('cseId');
-    
     const apiKeyLength = 39;
     const cseIdLength = 17;
 
-    const handleAPIClick = (event) => {
-        setShowAPIOptions(!showAPIOptions);
+    const handleAPIClick = () => {
+        setApiUse(!apiUse);
         enableInputs();
     };
 
-    const handleRangeChange = (event) => {
-        setDepthValue(event.target.value);
-    };
-    
-    const disableInputs = (event) => {
-        if (apiKeyValue.length === apiKeyLength && cseIdValue.length === cseIdLength){
-            setApiKeyState(true);
-            setCseIdState(true);
-        }
-        apiKey.value = apiKeyValue;
-        cseId.value = cseIdValue;
+    const handleActiveClick = () => {
+        setActiveUse(!activeUse);
     };
 
-    const enableInputs = (event) => {
+    const handleRangeChange = (event) => {
+        setDepth(event.target.value);
+    };
+
+    const handleApiValue = (e) => {
+        const apiKey = document.getElementById('apiKey');
+        apiKey.value = e.target.value;
+    };
+
+    const handleCseValue = (e) => {
+        const cseId = document.getElementById('cseId');
+        cseId.value = e.target.value;
+    };
+    
+    const disableInputs = () => {
+        const apiKey = document.getElementById('apiKey');
+        const cseId = document.getElementById('cseId');
+        if (apiKey.value.length === apiKeyLength && cseId.value.length === cseIdLength){
+            setApiKeyState(true);
+            setCseIdState(true);
+            setCseIdValue(cseId.value)
+            setApiKeyValue(apiKey.value)
+        }
+    };
+
+    const enableInputs = () => {
         setApiKeyState(false);
         setCseIdState(false);
+        setCseIdValue('');
+        setApiKeyValue('');
     };
 
     return (
         <div className='w-full h-15 bg-zinc-400 space-y-4 p-2'>
-            <div className=''>
+            <div className='max-w-full'>
                 <div className='flex-initial flex items-center gap-2 h-10'>
                     <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
-                        <input type="checkbox" id="checkbox" name="apiKey" value="unchecked" onClick={handleAPIClick}/>
-                        <span className='font-medium truncate text-gray-900'>API</span>
                         <Hint>This is a hint.</Hint>
+                        <input type="checkbox" id="checkbox" name="apiKey" checked={apiUse} onClick={handleAPIClick}/>
+                        <span className='font-medium truncate text-gray-900'>API</span>
                     </div>
                     
                     <form className='inline-flex gap-2'>
@@ -251,10 +265,10 @@ function SearchParameters() {
                         disabled= {apiKeyState}
                         id="apiKey"
                         size={apiKeyLength}
-                        className={`${showAPIOptions === false ? 'hidden' : ''} block w-full rounded-md py-2 pl-2 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
+                        className={`${apiUse === false ? 'hidden' : ''} block w-full rounded-md py-2 pl-2 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
                         placeholder="API key"
                         pattern="[a-zA-Z0-9]{17}"
-                        onChange={(e) => {setApiKey(e.target.value)}}
+                        onChange={handleApiValue}
                         required
                         />
 
@@ -263,18 +277,18 @@ function SearchParameters() {
                             name="cseId"
                             id="cseId"
                             disabled= {cseIdState}
-                            className={`${showAPIOptions === false ? 'hidden' : ''} block rounded-md py-2 pl-2 pr-20 border-zinc-400 placeholder:text-zinc-400 border-2 w-full  text-gray-900`}
-                            placeholder="CSE id"
+                            className={`${apiUse === false ? 'hidden' : ''} block rounded-md py-2 pl-2 pr-20 border-zinc-400 placeholder:text-zinc-400 border-2 w-full  text-gray-900`}
+                            placeholder="CSE Id"
                             pattern="[a-zA-Z0-9]{17}"
                             size={cseIdLength}
-                            onChange={(e) => {setCseId(e.target.value)}}
+                            onChange={handleCseValue}
                             required 
-                            />
+                        />
                                                
                     </form>
                     
                     <div className='hfull align-middle'>
-                        <button className={`${showAPIOptions === false ? 'hidden' : ''} w-20 rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={apiKeyState === false? disableInputs : enableInputs}>
+                        <button className={`${apiUse === false ? 'hidden' : ''} w-20 rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={apiKeyState === false? disableInputs : enableInputs}>
                             {apiKeyState === false? 'Add' : 'Modify'}
                         </button>
                     </div>
@@ -282,24 +296,25 @@ function SearchParameters() {
             </div>
             <div className='space-y-2'>
                 <div className='flex-initial flex items-center gap-2'>
+                    <Hint>This is a hint.</Hint>
                     <div className="font-medium truncate text-gray-900">
-                        <input type="checkbox" id="apiKey" name="apiKey" value="unchecked" />
+                        <input type="checkbox" id="apiKey" name="apiKey" checked={activeUse} onClick={handleActiveClick} />
                         <span class="ml-1">Active search</span>
                     </div>
-                    <Hint>This is a hint.</Hint>
+                    
                 </div>
             </div>
             <div className='space-y-2'>
                 <div className='flex-initial flex items-center gap-2'>
                     <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
+                        <Hint>This is a hint.</Hint>
                         <div className="font-medium truncate text-gray-900">
                             Depth
-                        </div>
-                        <Hint>This is a hint.</Hint>
+                        </div>   
                     </div>
                     <div class="flex w-50 items-center font-sans gap-2">
-                        <input id="depth" name="depth" type="range" min="1" max="6" value={depthValue} class="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
-                        <label for="depth">{depthValue}</label>
+                        <input id="depth" name="depth" type="range" min="1" max="6" value={depth} class="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
+                        <label for="depth">{depth}</label>
                     </div>
                 </div>
                 
@@ -314,7 +329,7 @@ function Hint({children}) {
             <div className='border-2 border-solid border-zinc-800 h-7 leading-6 w-7 rounded-full text-center font-sm text-zinc-800'>
                 i
             </div>
-            <div className='absolute left-9 bottom-0 top-0 opacity-0 transition-opacity group-hover:opacity-100 z-10 md:max-w-xl max-w-sm w-max'>
+            <div className='absolute left-9 bottom-0 top-0 hidden opacity-0 transition-opacity group-hover:block group-hover:opacity-100 z-10 md:max-w-xl max-w-sm w-max'>
                 <div className='bg-white p-1 text-sm rounded-lg border-2 border-solid border-zinc-300'>
                     {children}
                 </div>
