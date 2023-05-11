@@ -6,14 +6,13 @@ const FiltersDispatchContext = createContext(null);
 
 export function FiltersProvider({ children }) {
     const [filters, dispatch] = useReducer(
-        filtersReducer,
-        initialFilters
+        filtersReducer, []
     );
 
     return (
         <FiltersContext.Provider value={filters}>
             <FiltersDispatchContext.Provider value={dispatch}>
-            {children}
+                {children}
             </FiltersDispatchContext.Provider>
         </FiltersContext.Provider>
     );
@@ -46,9 +45,3 @@ function filtersReducer(filters, action) {
         }
     }
 }
-
-const initialFilters = [
-    { id: 0, value: 'Paul Martin', type: 'name', method: 'user_input', positive: 'true' },
-    { id: 1, value: 'Jean-Claude Van Damme', type: 'bizarre', method: 'user_input', positive: 'false' },
-    { id: 2, value: 'Michel Martino', type: 'name', method: 'user_input', positive: 'true' },
-  ];
