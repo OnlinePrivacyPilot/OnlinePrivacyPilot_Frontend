@@ -5,9 +5,9 @@ import { SearchParametersProvider, useSearchParameters } from '../contexts/Searc
 
 export default function SearchForm() {
     return (
-        <div className='bg-zinc-100 min-h-screen py-16 px-4'>
+        <div className='min-h-screen py-16 px-4'>
             <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
-                <div className='inline space-y-8 bg-zinc-300 p-4 basis-full lg:basis-3/4 max-w-full'>
+                <div className='inline space-y-8 p-4 basis-full lg:basis-3/4 max-w-full'>
                     <TargetProvider>
                         <AddTarget />
                     </TargetProvider>
@@ -19,7 +19,7 @@ export default function SearchForm() {
                         <SearchParameters />
                     </SearchParametersProvider>
                 </div>
-                <div className='bg-zinc-300 p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
+                <div className='p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
                     <SearchButton />
                 </div>
             </div>
