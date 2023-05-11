@@ -44,7 +44,7 @@ function AddFilter() {
             <div className='flex gap-4'>
                 <div className="flex-1 relative rounded-md shadow-sm">
                     <input
-                        className="block w-full rounded-md py-2 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+                        className="block w-full rounded-md py-2 pl-4 pr-52 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                         placeholder="John Doe"
                         value={value}
                         onChange={e => setValue(e.target.value)}
@@ -77,9 +77,9 @@ function AddFilter() {
                     </div>
                 </div>
                 <div className='flex items-center'>
-                    <div 
-                        className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-900 bg-green-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-green-400'
-                        onClick={() => {
+                    <ActionButton
+                        style='add'
+                        action={() => {
                             setValue('');
                             dispatch({
                                 op: 'added',
@@ -89,10 +89,7 @@ function AddFilter() {
                                 positive: positive
                             });
                         }}
-                    >
-                        <div className='absolute w-3 h-0.5 bg-green-900' ></div>
-                        <div className='absolute w-0.5 h-3 bg-green-900' ></div>
-                    </div>
+                    />
                 </div>
             </div>
         </div>
@@ -116,7 +113,7 @@ function AddTarget() {
                     type="text"
                     name="mainFilterValue"
                     id="mainFilterValue"
-                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-32 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                     placeholder="John Doe"
                     value={targetValue}
                     onChange={e => {
@@ -193,19 +190,15 @@ function Filter({filter}) {
                     {filter.method}
                 </div>
                 <div className='p-2 basis-1/12 text-center'>
-                    <div
-                        className='flex items-center'
-                        onClick={() => {
+                    <ActionButton
+                        style='delete'
+                        action={() => {
                             dispatch({
                                 op: 'deleted',
                                 id: filter.id
                             });
-                        }}    
-                    >
-                        <div className='relative flex items-center justify-center w-6 h-6 border-2 border-solid border-red-900 bg-red-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-1 hover:ring-inset hover:ring-red-400'>
-                            <div className='absolute w-2 h-0.5 bg-red-900' ></div>
-                        </div>
-                    </div>
+                        }}
+                    />
                 </div>
             </div>
         </div>
@@ -263,24 +256,21 @@ function SearchParameters() {
 
     return (
         <div className='w-full h-15 bg-zinc-400 space-y-4 p-2'>
-            <div className=' flex items-center gap-4 h-10'>
+            <div className='flex items-center gap-4 h-10'>
                 <div className="items-center align-middle inline-flex gap-2">
                     <Hint>This is a hint.</Hint>
                     <input type="checkbox" id="checkbox" name="apiKey" checked={apiUse} onClick={handleAPIClick}/>
                     <span className='font-medium truncate text-gray-900'>API</span>
                 </div>
-                
-                <div>
-                    <form className='inline-flex gap-2'>
+                <div className={`${apiUse === false ? 'hidden' : ''} flex gap-2`}>
                     <input
                     type="text"
                     name="apiKey"
                     disabled= {apiKeyState}
                     id="apiKey"
                     size={apiKeyLength}
-                    className={`${apiUse === false ? 'hidden' : ''} block w-full rounded-md p-2 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400`}
+                    className='block w-full rounded-md p-2 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400'
                     placeholder="API key"
-                    pattern="[a-zA-Z0-9]{17}"
                     onChange={handleApiValue}
                     required
                     />
@@ -290,20 +280,16 @@ function SearchParameters() {
                         name="cseId"
                         id="cseId"
                         disabled= {cseIdState}
-                        className={`${apiUse === false ? 'hidden' : ''} block rounded-md p-2 border-zinc-400 placeholder:text-zinc-400 border-2 w-full text-gray-900`}
+                        className='block rounded-md p-2 border-zinc-400 placeholder:text-zinc-400 border-2 w-full text-gray-900'
                         placeholder="CSE Id"
-                        pattern="[a-zA-Z0-9]{17}"
                         size={cseIdLength}
                         onChange={handleCseValue}
                         required 
                     />
-                                            
-                </form>
-                </div>
-                <div className='hfull align-middle'>
-                    <button className={`${apiUse === false ? 'hidden' : ''} rounded-md text-sm ring-2 ring-inset ring-indigo-400 bg-zinc-300 py-2 px-4 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500`} onClick={apiKeyState === false? disableInputs : enableInputs}>
-                        {apiKeyState === false? 'Add' : 'Modify'}
-                    </button>
+                    <ActionButton
+                        style={apiKeyState === false? 'add' : 'edit'}
+                        action={apiKeyState === false? disableInputs : enableInputs}
+                    />
                 </div>
             </div>
             <div className='space-y-2 sm:w-1/3'>
@@ -348,6 +334,47 @@ function Hint({children}) {
             </div>
         </div>
     );
+}
+
+function ActionButton({style, action}) {
+    function genButton() {
+        switch (style) {
+            case 'add': {
+                return (
+                    <div className='flex items-center' onClick={action}>
+                        <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-900 bg-green-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-green-400'>
+                            <div className='absolute w-3 h-0.5 bg-green-900' ></div>
+                            <div className='absolute w-0.5 h-3 bg-green-900' ></div>
+                        </div>
+                    </div>
+                )
+            }
+            case 'edit': {
+                return (
+                    <div className='flex items-center' onClick={action}>
+                        <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-yellow-900 bg-yellow-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-yellow-400'>
+                            <div className='rotate-45'>
+                                <div className='w-[3px] h-3 bg-yellow-900 mb-px' ></div>
+                                <div className='w-[3px] h-[3px] bg-yellow-900 rounded-b-full' ></div>
+                            </div>
+                        </div>
+                    </div>
+                )
+            }
+            case 'delete': {
+                return (
+                    <div className='flex items-center' onClick={action}>
+                        <div className='relative flex items-center justify-center w-6 h-6 border-2 border-solid border-red-900 bg-red-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-1 hover:ring-inset hover:ring-red-400'>
+                            <div className='absolute w-2 h-0.5 bg-red-900' ></div>
+                        </div>
+                    </div>
+                )
+            }
+        }
+    }
+    return (
+        genButton()
+    )
 }
 
 function SearchButton() {
