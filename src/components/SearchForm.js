@@ -1,20 +1,23 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
+import { TargetProvider, useTarget } from '../contexts/TargetContext'
 import { FiltersProvider, useFilters, useFiltersDispatch } from '../contexts/FiltersContext'
-import { SearchParametersProvider, useSearchParameters, SearchParametersContext } from '../contexts/SearchParametersContext';
+import { SearchParametersProvider, useSearchParameters } from '../contexts/SearchParametersContext';
 
 export default function SearchForm() {
     return (
         <div className='bg-zinc-100 min-h-screen py-16 px-4'>
             <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
                 <div className='inline space-y-8 bg-zinc-300 p-4 basis-full lg:basis-3/4 max-w-full'>
-                    <AddTarget />
+                    <TargetProvider>
+                        <AddTarget />
+                    </TargetProvider>
                     <FiltersProvider>
                         <AddFilter />
                         <FiltersList />
-                        <SearchParametersProvider>
-                            <SearchParameters />
-                        </SearchParametersProvider>
                     </FiltersProvider>
+                    <SearchParametersProvider>
+                        <SearchParameters />
+                    </SearchParametersProvider>
                 </div>
                 <div className='bg-zinc-300 p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
                     <SearchButton />
@@ -98,6 +101,8 @@ function AddFilter() {
 
 
 function AddTarget() {
+    const { targetValue: [targetValue, setTargetValue], targetType: [targetType, setTargetType] } = useTarget();
+
     return (
         <div className='space-y-2'>
             <div className='flex-initial flex items-center gap-2'>
@@ -108,21 +113,29 @@ function AddTarget() {
             </div>
             <div className="relative rounded-lg shadow-sm">
                 <input
-                type="text"
-                name="mainFilterValue"
-                id="mainFilterValue"
-                className="block w-full text-xl rounded-lg py-4 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
-                placeholder="John Doe"
+                    type="text"
+                    name="mainFilterValue"
+                    id="mainFilterValue"
+                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-20 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+                    placeholder="John Doe"
+                    value={targetValue}
+                    onChange={e => {
+                        setTargetValue(e.target.value)
+                    }}
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center">
                     <select
                         id="mainFilterType"
                         name="mainFilterType"
                         className="h-full rounded-lg text-base border-2 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                        value={targetType}
+                        onChange={e => {
+                            setTargetType(e.target.value)
+                        }}
                     >
-                        <option selected="selected">Name</option>
-                        <option>Username</option>
-                        <option>Email</option>
+                        <option value="name" selected="selected">Name</option>
+                        <option value="username">Username</option>
+                        <option value="email">Email</option>
                     </select>
                 </div>
             </div>
