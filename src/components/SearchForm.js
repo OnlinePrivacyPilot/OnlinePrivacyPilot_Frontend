@@ -33,7 +33,7 @@ function AddFilter() {
             <div className='flex-initial flex items-center gap-2'>
                 <Hint>This is a hint.</Hint>
                 <div className="font-medium truncate text-gray-900">
-                    Other filter(s)
+                    Add filter
                 </div>
             </div>
             <div className='flex gap-4'>
@@ -76,7 +76,6 @@ function AddFilter() {
                         className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-800 bg-green-200 rounded-full'
                         onClick={() => {
                             setValue('');
-                            console.log(type);
                             dispatch({
                                 op: 'added',
                                 id: nextId,
@@ -102,7 +101,7 @@ function AddTarget() {
             <div className='flex-initial flex items-center gap-2'>
                 <Hint>This is a hint.</Hint>
                 <div className="font-medium truncate text-gray-900">
-                    Main filter
+                    Target
                 </div>
             </div>
             <div className="relative rounded-lg shadow-sm">
@@ -132,18 +131,68 @@ function AddTarget() {
 function FiltersList() {
     const filters = useFilters();
     return (
-        <div className='h-48 bg-zinc-400 border-2 rounded-lg p-4 overflow-y-scroll overflow-x-scroll'>
-            {filters.map(filter => (
-                <Filter filter={filter} />
-            ))}
+        <div className='space-y-2'>
+            <div className='flex-initial flex items-center gap-2'>
+                <Hint>This is a hint.</Hint>
+                <div className="font-medium truncate text-gray-900">
+                    Current filters
+                </div>
+            </div>
+            <div>
+                <div className='border-2 px-4 border-zinc-400 rounded-t-lg bg-zinc-400 text-white font-extrabold'>
+                    <div className='flex flex-row'>
+                        <div className='p-2 basis-5/12 overflow-hidden text-ellipsis'>
+                            Value
+                        </div>
+                        <div className='p-2 basis-1/4 overflow-hidden text-ellipsis'>
+                            Type
+                        </div>
+                        <div className='p-2 basis-1/4 overflow-hidden text-ellipsis'>
+                            Method
+                        </div>
+                    </div>
+                </div>
+                <div className='h-48 bg-white border-2 border-zinc-400 rounded-b-lg p-4 overflow-y-scroll space-y-2'>
+                    {filters.map(filter => (
+                        <Filter filter={filter} />
+                    ))}
+                </div>
+            </div>
         </div>
+
     )
 }
 
 function Filter({filter}) {
+    const dispatch = useFiltersDispatch();
     return (
-        <div>
-            {filter.id} {filter.value} {filter.type} {filter.method} {filter.positive}
+        <div className={`${filter.positive === 'true' ? 'border-green-400' : 'border-red-400'} border-2 bg-zinc-100 rounded-lg`}>
+            <div className='flex flex-row'>
+                <div className='p-2 basis-5/12 overflow-hidden text-ellipsis'>
+                    {filter.value}
+                </div>
+                <div className='p-2 basis-1/4 overflow-hidden text-ellipsis'>
+                    {filter.type}
+                </div>
+                <div className='p-2 basis-1/4 overflow-hidden text-ellipsis'>
+                    {filter.method}
+                </div>
+                <div className='p-2 basis-1/12 text-center'>
+                    <div
+                        className='flex items-center'
+                        onClick={() => {
+                            dispatch({
+                                op: 'deleted',
+                                id: filter.id
+                            });
+                        }}    
+                    >
+                        <div className='relative flex items-center justify-center w-6 h-6 border-2 border-solid border-red-800 bg-red-200 rounded-full'>
+                            <div className='absolute w-2 h-0.5 bg-red-800' ></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
