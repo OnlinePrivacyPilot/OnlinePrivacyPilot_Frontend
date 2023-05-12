@@ -380,6 +380,7 @@ function ActionButton({style, action}) {
 }
 
 function SearchButton() {
+    const [searchInProgress, setSearchInProgress] = useState(false);
     const targetData = useTarget();
     const filtersData = useFilters();
     const searchParametersData = useSearchParameters();
@@ -389,38 +390,54 @@ function SearchButton() {
     const apiUse = searchParametersData.apiState[0];
     const targetValue = targetData.targetValue[0];
     
-    const handleSubmit = () => {
-        const filterValues = filtersData.map(filter => {
-            return {
-              value: filter.value,
-              type: filter.type,
-              positive: filter.positive
-            };
-        });
-             
-        const params = {
-            target: targetValue.toString(),
-            active_search: active_search,
-            depth: depth,
-            initial_filters: JSON.stringify(filterValues)
+    function handleSubmit() {
+        if (searchInProgress === false) {
+            setSearchInProgress(true); // Process starts
+
+            const filterValues = filtersData.map(filter => {
+                return {
+                  value: filter.value,
+                  type: filter.type,
+                  positive: filter.positive
+                };
+            });
+                 
+            const params = {
+                target: targetValue.toString(),
+                active_search: active_search,
+                depth: depth,
+                initial_filters: JSON.stringify(filterValues)
+            }
+    
+            if(apiUse && (searchParametersData.apiKeyState[0] !== '' || searchParametersData.cseIdState[0] !== '')) {
+                params['api_key'] = searchParametersData.apiKeyState[0];
+                params['cse_id'] = searchParametersData.cseIdState[0]; 
+            }
+    
+            axios.get('http://127.0.0.1:5000/api/?', { params })
+            .then(response => {
+                console.log(response.data);
+                setSearchInProgress(false); // Process ends
+            })
+            .catch(error => {
+                console.error(error);
+                setSearchInProgress(false); // Process ends
+            });            
         }
-
-        if(apiUse && (searchParametersData.apiKeyState[0] !== '' || searchParametersData.cseIdState[0] !== '')) {
-            params['api_key'] = searchParametersData.apiKeyState[0];
-            params['cse_id'] = searchParametersData.cseIdState[0]; 
-        }
-
-        axios.get('http://127.0.0.1:5000/api/?', { params })
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error(error);
-        });
-
     };
           
     return (
-        <button className='rounded-lg p-4' onClick={handleSubmit}>Launch search</button>
+        <div className='flex-wrap space-y-4'>
+            <div className='basis-full'>
+                <button className='rounded-lg p-4' onClick={handleSubmit}>Launch search</button>
+            </div>
+            <div className={`${searchInProgress ? 'visible' : 'invisible'} basis-full flex justify-center items-center`}>
+                <svg className='animate-spin h-5 w-5 mr-3' viewBox="0 0 24 24">
+                    <circle cx='12' cy='12' r='10' stroke='currentColor' fillOpacity='0' strokeOpacity='0.25' strokeWidth='4'></circle>
+                    <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
+                </svg>
+                Search in progress...
+            </div>
+        </div>
     )
 }
