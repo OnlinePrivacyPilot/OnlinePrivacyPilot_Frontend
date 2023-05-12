@@ -2,35 +2,36 @@ import { useState } from 'react';
 import { TargetProvider, useTarget } from '../contexts/TargetContext'
 import { FiltersProvider, useFilters, useFiltersDispatch } from '../contexts/FiltersContext'
 import { SearchParametersProvider, useSearchParameters } from '../contexts/SearchParametersContext';
+import axios from 'axios'
 
 export default function SearchForm() {
     return (
-        <div className='min-h-screen py-16 px-4'>
-            <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
-                <div className='inline space-y-8 p-4 basis-full lg:basis-3/4 max-w-full'>
-                    <TargetProvider>
-                        <AddTarget />
-                    </TargetProvider>
-                    <FiltersProvider>
-                        <AddFilter />
-                        <FiltersList />
-                    </FiltersProvider>
-                    <SearchParametersProvider>
-                        <SearchParameters />
-                    </SearchParametersProvider>
+    <TargetProvider>
+        <FiltersProvider>
+            <SearchParametersProvider>
+                <div className='min-h-screen py-16 px-4'>
+                    <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
+                        <div className='inline space-y-8 p-4 basis-full lg:basis-3/4 max-w-full'>
+                                <AddTarget />
+                                <AddFilter />
+                                <FiltersList />
+                                <SearchParameters />
+                        </div>
+                        <div className='p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
+                            <SearchButton />        
+                        </div>
+                    </div>
                 </div>
-                <div className='p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
-                    <SearchButton />
-                </div>
-            </div>
-        </div>
+            </SearchParametersProvider>
+        </FiltersProvider>
+    </TargetProvider>
     )
 }
 
 function AddFilter() {
     const [value, setValue] = useState('');
     const [type, setType] = useState('name');
-    const [positive, setPositive] = useState('true');
+    const [positive, setPositive] = useState(1);
     const dispatch = useFiltersDispatch();
     const nextId = useFilters().length;
     return (
@@ -55,10 +56,10 @@ function AddFilter() {
                             name="otherFilterPositive"
                             className="h-full rounded-l-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                             value={positive}
-                            onChange={e => setPositive(e.target.value)}
+                            onChange={e => setPositive(+e.target.value)}
                         >
-                            <option value="true" selected="selected">Positive</option>
-                            <option value="false">Negative</option>
+                            <option value={1} selected="selected">Positive</option>
+                            <option value={0}>Negative</option>
                         </select>
                         <select
                             id="otherFilterType"
@@ -178,7 +179,7 @@ function FiltersList() {
 function Filter({filter}) {
     const dispatch = useFiltersDispatch();
     return (
-        <div className={`${filter.positive === 'true' ? 'border-green-400' : 'border-red-400'} border-2 bg-zinc-100 rounded-lg`}>
+        <div className={`${filter.positive === 1 ? 'border-green-400' : 'border-red-400'} border-2 bg-zinc-100 rounded-lg`}>
             <div className='flex flex-row'>
                 <div className='p-2 basis-5/12 overflow-hidden text-ellipsis'>
                     {filter.value}
@@ -376,7 +377,47 @@ function ActionButton({style, action}) {
 }
 
 function SearchButton() {
+    const targetData = useTarget();
+    const filtersData = useFilters();
+    const searchParametersData = useSearchParameters();
+
+    const active_search = searchParametersData.activeState[0] === true ? 1 : 0;
+    const depth = searchParametersData.depthValue[0];
+    const apiUse = searchParametersData.apiState[0];
+    const targetValue = targetData.targetValue[0];
+    
+    const handleSubmit = () => {
+        const filterValues = filtersData.map(filter => {
+            return {
+              value: filter.value,
+              type: filter.type,
+              positive: filter.positive
+            };
+        });
+             
+        const params = {
+            target: targetValue.toString(),
+            active_search: active_search,
+            depth: depth,
+            initial_filters: JSON.stringify(filterValues)
+        }
+
+        if(apiUse && (searchParametersData.apiKeyState[0] !== '' || searchParametersData.cseIdState[0] !== '')) {
+            params['api_key'] = searchParametersData.apiKeyState[0];
+            params['cse_id'] = searchParametersData.cseIdState[0]; 
+        }
+
+        axios.get('http://127.0.0.1:5000/api/?', { params })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+
+    };
+          
     return (
-        <button className='rounded-lg p-4'>Launch search</button>
+        <button className='rounded-lg p-4' onClick={handleSubmit}>Launch search</button>
     )
 }
