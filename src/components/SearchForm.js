@@ -83,7 +83,7 @@ function AddFilter() {
                         action={() => {
                             setValue('');
                             dispatch({
-                                op: 'added',
+                                op: 'add',
                                 id: nextId,
                                 value: value,
                                 type: type,
@@ -194,7 +194,7 @@ function Filter({filter}) {
                         style='delete'
                         action={() => {
                             dispatch({
-                                op: 'deleted',
+                                op: 'delete',
                                 id: filter.id
                             });
                         }}

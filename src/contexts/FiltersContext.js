@@ -27,21 +27,25 @@ export function useFiltersDispatch() {
 }
 
 function filtersReducer(filters, action) {
-    switch (action.op) {
-        case 'added': {
-            return [...filters, {
-                id: action.id,
-                value: action.value,
-                type: action.type,
-                method: 'user_input',
-                positive: action.positive
-            }];
+    if (action.value !== '') { // if the new filter has a non-empty value
+        switch (action.op) {
+            case 'add': {
+                return [...filters, {
+                    id: action.id,
+                    value: action.value,
+                    type: action.type,
+                    method: 'user_input',
+                    positive: action.positive
+                }];
+            }
+            case 'delete': {
+                return filters.filter(t => t.id !== action.id);
+            }
+            default: {
+                throw Error('Unknown action: ' + action.op);
+            }
         }
-        case 'deleted': {
-            return filters.filter(t => t.id !== action.id);
-        }
-        default: {
-            throw Error('Unknown action: ' + action.op);
-        }
+    } else { // otherwise do not modify the list of filters
+        return filters; 
     }
 }
