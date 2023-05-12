@@ -55,20 +55,20 @@ function AddFilter() {
                             id="otherFilterPositive"
                             name="otherFilterPositive"
                             className="h-full rounded-l-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                            value={positive}
+                            defaultValue={1}
                             onChange={e => setPositive(+e.target.value)}
                         >
-                            <option value={1} selected="selected">Positive</option>
+                            <option value={1}>Positive</option>
                             <option value={0}>Negative</option>
                         </select>
                         <select
                             id="otherFilterType"
                             name="otherFilterType"
                             className="h-full rounded-r-md text-sm border-2 border-l-0 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                            value={type}
+                            defaultValue="name"
                             onChange={e => setType(e.target.value)}
                         >
-                            <option value="name" selected="selected">Name</option>
+                            <option value="name">Name</option>
                             <option value="username">Username</option>
                             <option value="email">Email</option>
                             <option value="location">Location</option>
@@ -99,7 +99,7 @@ function AddFilter() {
 
 
 function AddTarget() {
-    const { targetValue: [targetValue, setTargetValue], targetType: [targetType, setTargetType] } = useTarget();
+    const { targetValue: [targetValue, setTargetValue], targetType: [, setTargetType] } = useTarget();
 
     return (
         <div className='space-y-2'>
@@ -116,7 +116,6 @@ function AddTarget() {
                     id="mainFilterValue"
                     className="block w-full text-xl rounded-lg py-4 pl-4 pr-32 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                     placeholder="John Doe"
-                    value={targetValue}
                     onChange={e => {
                         setTargetValue(e.target.value)
                     }}
@@ -126,12 +125,12 @@ function AddTarget() {
                         id="mainFilterType"
                         name="mainFilterType"
                         className="h-full rounded-lg text-base border-2 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                        value={targetType}
+                        defaultValue="name"
                         onChange={e => {
                             setTargetType(e.target.value)
                         }}
                     >
-                        <option value="name" selected="selected">Name</option>
+                        <option value="name">Name</option>
                         <option value="username">Username</option>
                         <option value="email">Email</option>
                     </select>
@@ -167,7 +166,7 @@ function FiltersList() {
                 </div>
                 <div className='h-48 bg-white border-2 border-zinc-400 rounded-b-lg p-4 overflow-y-scroll space-y-2'>
                     {filters.map(filter => (
-                        <Filter filter={filter} />
+                        <Filter key={filter.id} filter={filter} />
                     ))}
                 </div>
             </div>
@@ -260,7 +259,7 @@ function SearchParameters() {
             <div className='flex items-center gap-4 max-h-6'>
                 <div className="flex-initial flex items-center gap-2">
                     <Hint>This is a hint.</Hint>
-                    <input type="checkbox" id="checkbox" name="apiKey" checked={apiUse} onClick={handleAPIClick}/>
+                    <input type="checkbox" id="checkbox" name="apiKey" defaultChecked={apiUse} onChange={handleAPIClick}/>
                     <span className='font-medium truncate text-gray-900'>API</span>
                 </div>
                 <div className={`${apiUse === false ? 'hidden' : ''} flex gap-2`}>
@@ -296,8 +295,8 @@ function SearchParameters() {
             <div className='flex-initial flex items-center gap-2'>
                 <Hint>This is a hint.</Hint>
                 <div className="font-medium truncate text-gray-900">
-                    <input type="checkbox" id="apiKey" name="apiKey" checked={activeUse} onClick={handleActiveClick} />
-                    <span class="ml-1">Active search</span>
+                    <input type="checkbox" id="apiKey" name="apiKey" defaultChecked={activeUse} onChange={handleActiveClick} />
+                    <span className="ml-1">Active search</span>
                 </div>
                 
             </div>
@@ -308,9 +307,9 @@ function SearchParameters() {
                         Depth
                     </div>   
                 </div>
-                <div class="flex w-50 items-center font-sans gap-2">
-                    <input id="depth" name="depth" type="range" min="1" max="6" value={depth} class="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
-                    <label for="depth">{depth}</label>
+                <div className="flex w-50 items-center font-sans gap-2">
+                    <input id="depth" name="depth" type="range" min="1" max="6" value={depth} className="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
+                    <label htmlFor="depth">{depth}</label>
                 </div>
             </div>
         </div>
@@ -341,9 +340,9 @@ function ActionButton({style, action}) {
             case 'add': {
                 return (
                     <div className='flex items-center' onClick={action}>
-                        <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-green-900 bg-green-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-green-400'>
-                            <div className='absolute w-3 h-0.5 bg-green-900 rounded' ></div>
-                            <div className='absolute w-0.5 h-3 bg-green-900 rounded' ></div>
+                        <div className='relative flex items-center justify-center w-8 h-8 border-2 border-solid border-sky-900 bg-sky-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-sky-400'>
+                            <div className='absolute w-3 h-0.5 bg-sky-900 rounded' ></div>
+                            <div className='absolute w-0.5 h-3 bg-sky-900 rounded' ></div>
                         </div>
                     </div>
                 )
@@ -368,6 +367,10 @@ function ActionButton({style, action}) {
                         </div>
                     </div>
                 )
+            }
+            default: {
+                // return nothing
+                return (<></>)
             }
         }
     }

@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Navbar />
-      <div class="max-w-screen-lg mx-auto px-4">
+      <div className="max-w-screen-lg mx-auto px-4">
           <SearchForm />
           <GraphDisplay />
       </div>
