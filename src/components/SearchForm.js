@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { TargetProvider, useTarget } from '../contexts/TargetContext'
 import { FiltersProvider, useFilters, useFiltersDispatch } from '../contexts/FiltersContext'
 import { SearchParametersProvider, useSearchParameters } from '../contexts/SearchParametersContext';
+import { useFingerprintsDispatch } from '../contexts/FingerprintsContext';
 import axios from 'axios'
 
 export default function SearchForm() {
@@ -384,6 +385,7 @@ function SearchButton() {
     const targetData = useTarget();
     const filtersData = useFilters();
     const searchParametersData = useSearchParameters();
+    const dispatch = useFingerprintsDispatch();
     
     function handleSubmit() {
         if (searchInProgress === false && targetData.targetValue[0] !== '') {
@@ -418,6 +420,10 @@ function SearchButton() {
                 .get('http://127.0.0.1:5000/api/?', { params })
                 .then(response => {
                     console.log(response.data);
+                    dispatch({
+                        op: 'new',
+                        fingerprint: response.data
+                    })
                     setSearchInProgress(false); // Process ends
                 })
                 .catch(error => {
