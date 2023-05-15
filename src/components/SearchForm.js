@@ -384,45 +384,46 @@ function SearchButton() {
     const targetData = useTarget();
     const filtersData = useFilters();
     const searchParametersData = useSearchParameters();
-
-    const active_search = searchParametersData.activeState[0] === true ? 1 : 0;
-    const depth = searchParametersData.depthValue[0];
-    const apiUse = searchParametersData.apiState[0];
-    const targetValue = targetData.targetValue[0];
     
     function handleSubmit() {
-        if (searchInProgress === false) {
-            setSearchInProgress(true); // Process starts
+        if (searchInProgress === false && targetData.targetValue[0] !== '') {
 
-            const filterValues = filtersData.map(filter => {
-                return {
-                  value: filter.value,
-                  type: filter.type,
-                  positive: filter.positive
-                };
-            });
+            if (searchParametersData.apiState[0]) {
+                if (searchParametersData.apiKeyState[0] !== '' && searchParametersData.cseIdState[0] !== '') {
+                    params['api_key'] = searchParametersData.apiKeyState[0];
+                    params['cse_id'] = searchParametersData.cseIdState[0]; 
+                } else {
+                    return; // Workaround to force to provide API key if API is selected
+                }
+            }
                  
             const params = {
-                target: targetValue.toString(),
-                active_search: active_search,
-                depth: depth,
-                initial_filters: JSON.stringify(filterValues)
+                target: targetData.targetValue[0].toString(),
+                active_search: searchParametersData.activeState[0] === true ? 1 : 0,
+                depth: searchParametersData.depthValue[0],
+                initial_filters: JSON.stringify(
+                    filtersData.map(filter => {
+                        return {
+                          value: filter.value,
+                          type: filter.type,
+                          positive: filter.positive
+                        };
+                    })
+                )
             }
-    
-            if(apiUse && (searchParametersData.apiKeyState[0] !== '' || searchParametersData.cseIdState[0] !== '')) {
-                params['api_key'] = searchParametersData.apiKeyState[0];
-                params['cse_id'] = searchParametersData.cseIdState[0]; 
-            }
-    
-            axios.get('http://127.0.0.1:5000/api/?', { params })
-            .then(response => {
-                console.log(response.data);
-                setSearchInProgress(false); // Process ends
-            })
-            .catch(error => {
-                console.error(error);
-                setSearchInProgress(false); // Process ends
-            });            
+
+            setSearchInProgress(true); // Process starts
+
+            axios
+                .get('http://127.0.0.1:5000/api/?', { params })
+                .then(response => {
+                    console.log(response.data);
+                    setSearchInProgress(false); // Process ends
+                })
+                .catch(error => {
+                    console.error(error);
+                    setSearchInProgress(false); // Process ends
+                });
         }
     };
           
