@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer, useState } from 'react';
+import { createContext, useContext, useReducer } from 'react';
 
 const FingerprintsContext = createContext(null);
 
@@ -8,7 +8,6 @@ export function FingerprintsProvider({ children }) {
     const [fingerprints, dispatch] = useReducer(
         fingerprintsReducer, []
     );
-    const [searchInProgress, setSearchInProgress] = useState(false);
 
     return (
         <FingerprintsContext.Provider value={fingerprints}>
