@@ -3,24 +3,62 @@ import { useState } from "react";
 import Graph from "graphology";
 import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
 import "@react-sigma/core/lib/react-sigma.min.css";
+import data from '../test3.json'
 
 export const LoadGraph = () => {
-  const loadGraph = useLoadGraph();
+  const [graphState, setGraphState] = useState(null);
+  
+  // const buildGraph = (root, graph) => {  
+  //   while(root.child && Array.isArray(root.child)) {
+  //     root.child.forEach((obj, index) => {
+  //     const node = {
+  //       id: index + 1,
+  //       label: obj.value,
+  //       x: Math.random(),
+  //       y: Math.random(),
+  //       size: 15,
+  //       color: '#ff66ccc'
+  //     };
+  //     console.log(obj.value)
+  //     graph.addNode(obj.value, node);
+  //     graph.addEdge(obj.value,root.label)
+  //     buildGraph(node,graph);
+  //     });
+  //   }
+  // }
+
 
   useEffect(() => {
-    const graph = new Graph();
-    graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FA4F40" });
-    graph.addNode("second", { x: 50, y: 50, size: 15, label: "My second node", color: "#FA4F40" });
-    graph.addEdge("first", "second")
-    loadGraph(graph);
-  }, [loadGraph]);
+    // if(Data) {
+    //   const newGraph = new Graph();
+    //   const root = {
+    //     "label": Data.value,
+    //     "child": Data.child,
+    //     "method": Data.method,
+    //     "positive": Data.positive,
+    //     "type": Data.type
+    //   }
+    //   newGraph.addNode(root.label, { id: 0, label: root.label, x: 0, y: 0, size: 15, color: '#ff66cc'})
+    //   buildGraph(root, newGraph);
+    //   setGraphState(newGraph);
+    // }
+    const newGraph = new Graph();
+    newGraph.import(data)
+    newGraph.nodes().forEach((node, i) => {
+      const angle = (i * 2 * Math.PI) / newGraph.order;
+      newGraph.setNodeAttribute(node, "x", i * Math.cos(angle));
+      newGraph.setNodeAttribute(node, "y", i * Math.sin(angle));
+      newGraph.setNodeAttribute(node, "color", "df4620");
+      newGraph.setNodeAttribute(node, "size", 15);
+    });
+    setGraphState(newGraph)
+  }, [data]);
 
-  return null;
+  return graphState ? <SigmaContainer graph={graphState}></SigmaContainer> : null;
 }
 
 
-export const GraphDisplay = (props) => {
-
+export const GraphDisplay = () => {
     const [showGraph, setShowGraph] = useState(true);
   
     const handleGraphClick = () => {
@@ -36,9 +74,7 @@ export const GraphDisplay = (props) => {
         return (
           <div className='grid  m-auto bg-slate-500' style={{ height: '100vh', width: "100%" }}>
             <div className='w-full m-0 p-4'>
-              <SigmaContainer>
                 <LoadGraph />
-              </SigmaContainer>
             </div>
           </div>
         );

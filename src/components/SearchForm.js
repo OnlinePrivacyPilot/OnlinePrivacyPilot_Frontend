@@ -3,6 +3,7 @@ import { TargetProvider, useTarget } from '../contexts/TargetContext'
 import { FiltersProvider, useFilters, useFiltersDispatch } from '../contexts/FiltersContext'
 import { SearchParametersProvider, useSearchParameters } from '../contexts/SearchParametersContext';
 import axios from 'axios'
+import GraphDisplay from './GraphDisplay';
 
 export default function SearchForm() {
     return (
@@ -389,7 +390,9 @@ function SearchButton() {
     const apiUse = searchParametersData.apiState[0];
     const targetValue = targetData.targetValue[0];
     
-    const handleSubmit = () => {
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+
         const filterValues = filtersData.map(filter => {
             return {
               value: filter.value,
@@ -417,6 +420,7 @@ function SearchButton() {
         .catch(error => {
             console.error(error);
         });
+        
 
     };
           
