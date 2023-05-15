@@ -3,23 +3,24 @@ import { useState } from "react";
 import Graph from "graphology";
 import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
 import "@react-sigma/core/lib/react-sigma.min.css";
+import { useFingerprints } from "../contexts/FingerprintsContext";
 
-export const LoadGraph = () => {
-  const loadGraph = useLoadGraph();
+const DisplayGraph = (props) => {
+  const graph = new Graph();
+  graph.import(props.fingerprint);
+  graph.nodes().forEach((node, i) => {
+    const angle = (i * 2 * Math.PI) / graph.order;
+    graph.setNodeAttribute(node, "x", i * Math.cos(angle));
+    graph.setNodeAttribute(node, "y", i * Math.sin(angle));
+    graph.setNodeAttribute(node, "size", 10);
+    graph.setNodeAttribute(node, "color", "#aaa");
+  });
+  return <SigmaContainer graph={graph}></SigmaContainer>;
+};
 
-  useEffect(() => {
-    const graph = new Graph();
-    graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FA4F40" });
-    graph.addNode("second", { x: 50, y: 50, size: 15, label: "My second node", color: "#FA4F40" });
-    graph.addEdge("first", "second")
-    loadGraph(graph);
-  }, [loadGraph]);
 
-  return null;
-}
-
-
-export const GraphDisplay = (props) => {
+export const DisplayResults = (props) => {
+    const fingerprints = useFingerprints();
 
     const [showGraph, setShowGraph] = useState(true);
   
@@ -33,22 +34,24 @@ export const GraphDisplay = (props) => {
   
     const renderPageContent = () => {
       if (showGraph) {
-        return (
-          <div className='grid  m-auto bg-slate-500' style={{ height: '100vh', width: "100%" }}>
-            <div className='w-full m-0 p-4'>
-              <SigmaContainer>
-                <LoadGraph />
-              </SigmaContainer>
-            </div>
-          </div>
-        );
+        if ( fingerprints.length !== 0 ) {
+          return (
+              <div className='w-full m-0 p-4'>
+                <DisplayGraph fingerprint={fingerprints.at(-1).fingerprint} />
+              </div>
+          );
+        } else {
+          return (
+            <>
+              <p>No data to display, please launch a search.</p>
+            </>
+          );
+        }
       } else {
         return (
-          <div>
+          <>
             <p>Here implement the list representation</p>
-            <div style={{ height: '100vh', width: "100%" }}>
-            </div>
-          </div>
+          </>
         );
       }
     };
@@ -75,11 +78,11 @@ export const GraphDisplay = (props) => {
           </button>
         </nav>          
         <div className="m-4">
+          <div className='grid  m-auto bg-zinc-300' style={{ height: '100vh', width: "100%" }}>
             {renderPageContent()}
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
-export default GraphDisplay;

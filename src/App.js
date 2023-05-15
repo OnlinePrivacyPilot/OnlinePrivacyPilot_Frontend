@@ -1,6 +1,6 @@
 import './App.css';
 import Navbar from './components/Navbar';
-import GraphDisplay from './components/GraphDisplay';
+import { DisplayResults } from './components/DisplayResults';
 import SearchForm from './components/SearchForm';
 import { FingerprintsProvider } from './contexts/FingerprintsContext';
 
@@ -11,7 +11,7 @@ function App() {
       <div className="max-w-screen-lg mx-auto px-4">
           <FingerprintsProvider>
             <SearchForm />
-            <GraphDisplay />
+            <DisplayResults />
           </FingerprintsProvider>
       </div>
     </>
