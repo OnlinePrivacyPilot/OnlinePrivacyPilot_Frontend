@@ -37,7 +37,7 @@ function AddFilter() {
     return (
         <div className='space-y-2'>
             <div className='flex-initial flex items-center gap-2'>
-                <Hint>This is a hint.</Hint>
+                <Hint>Here you can specify filters to improve the relevance of the search, positive filters are used to select a subset of results and negative filters are used to exclude a subset of results.</Hint>
                 <div className="font-medium truncate text-gray-900">
                     Add filter
                 </div>
@@ -104,7 +104,7 @@ function AddTarget() {
     return (
         <div className='space-y-2'>
             <div className='flex-initial flex items-center gap-2'>
-                <Hint>This is a hint.</Hint>
+                <Hint>Here you have to specify the target, i.e. a piece of information that characterizes you and that will be used as a starting point for the search.</Hint>
                 <div className="font-medium truncate text-gray-900">
                     Target
                 </div>
@@ -145,7 +145,7 @@ function FiltersList() {
     return (
         <div className='space-y-2'>
             <div className='flex-initial flex items-center gap-2'>
-                <Hint>This is a hint.</Hint>
+                <Hint>Here will be displayed the list of filters that you have provided manually and from the results in the graph. The positive filters are circled in green and the negative ones in red.</Hint>
                 <div className="font-medium truncate text-gray-900">
                     Current filters
                 </div>
@@ -258,7 +258,7 @@ function SearchParameters() {
         <div className='w-full space-y-4'>
             <div className='flex items-center gap-4 max-h-6'>
                 <div className="flex-initial flex items-center gap-2">
-                    <Hint>This is a hint.</Hint>
+                    <Hint>Here you can enter Google API key and CSE ID to use Google Search API instead of scraping results from Google webpage. If you don't want to use Google Search API, clear the checkbox.</Hint>
                     <input type="checkbox" id="checkbox" name="apiKey" defaultChecked={apiUse} onChange={handleAPIClick}/>
                     <span className='font-medium truncate text-gray-900'>API</span>
                 </div>
@@ -293,7 +293,7 @@ function SearchParameters() {
                 </div>
             </div>
             <div className='flex-initial flex items-center gap-2'>
-                <Hint>This is a hint.</Hint>
+                <Hint>This option activates the active search, specific queries are likely to be made to websites that cannot be trusted. Use with caution.</Hint>
                 <div className="font-medium truncate text-gray-900">
                     <input type="checkbox" id="apiKey" name="apiKey" defaultChecked={activeUse} onChange={handleActiveClick} />
                     <span className="ml-1">Active search</span>
@@ -302,7 +302,7 @@ function SearchParameters() {
             </div>
             <div className='flex-initial flex items-center gap-2'>
                 <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
-                    <Hint>This is a hint.</Hint>
+                    <Hint>This option defines the maximum number of recursions that can be performed on the target during the search.</Hint>
                     <div className="font-medium truncate text-gray-900">
                         Depth
                     </div>   
@@ -325,7 +325,7 @@ function Hint({children}) {
                     <div className='ml-[7px] w-0.5 h-[7px] bg-zinc-900 rounded' ></div>
                 </div>
             </div>
-            <div className='absolute left-7 bottom-0 top-[-10px] hidden opacity-0 transition-opacity group-hover:block group-hover:opacity-100 z-10 md:max-w-xl max-w-sm w-max'>
+            <div className='absolute left-7 bottom-0 top-[-10px] hidden opacity-0 transition-opacity group-hover:block group-hover:opacity-100 z-10 md:max-w-xl sm:max-w-md max-w-xs w-max'>
                 <div className='bg-white p-2 text-sm rounded-lg border-2 border-solid border-zinc-300'>
                     {children}
                 </div>
