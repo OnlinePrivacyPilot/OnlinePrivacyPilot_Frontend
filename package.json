@@ -5,6 +5,8 @@
   "dependencies": {
     "@heroicons/react": "^1.0.6",
     "@react-sigma/core": "^3.4.0",
+    "@react-sigma/layout-core": "^3.4.0",
+    "@react-sigma/layout-forceatlas2": "^3.4.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",

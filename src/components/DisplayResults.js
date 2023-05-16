@@ -1,23 +1,6 @@
-import { useEffect } from "react";
 import { useState } from "react";
-import Graph from "graphology";
-import { SigmaContainer, useLoadGraph } from "@react-sigma/core";
-import "@react-sigma/core/lib/react-sigma.min.css";
 import { useFingerprints } from "../contexts/FingerprintsContext";
-
-const DisplayGraph = (props) => {
-  const graph = new Graph();
-  graph.import(props.fingerprint);
-  graph.nodes().forEach((node, i) => {
-    const angle = (i * 2 * Math.PI) / graph.order;
-    graph.setNodeAttribute(node, "x", i * Math.cos(angle));
-    graph.setNodeAttribute(node, "y", i * Math.sin(angle));
-    graph.setNodeAttribute(node, "size", 10);
-    graph.setNodeAttribute(node, "color", "#aaa");
-  });
-  return <SigmaContainer graph={graph}></SigmaContainer>;
-};
-
+import { DisplayGraph } from "./DisplayGraph";
 
 export const DisplayResults = (props) => {
     const fingerprints = useFingerprints();
