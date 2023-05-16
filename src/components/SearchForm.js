@@ -425,6 +425,10 @@ function SearchButton() {
                         fingerprint: response.data
                     })
                     setSearchInProgress(false); // Process ends
+                    const elem = document.getElementById("results");
+                    if (elem) {
+                        elem.scrollIntoView({ behavior: 'smooth' });
+                    }
                 })
                 .catch(error => {
                     console.error(error);

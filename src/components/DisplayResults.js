@@ -41,7 +41,7 @@ export const DisplayResults = (props) => {
 
   return (
     //TBD : change the a beacon?
-    <div className="flex flex-wrap items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <div id="results" className="flex flex-wrap items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
       <div className="flex-wrap w-full justify-between">
         <nav className="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
           <button className="relative inline-flex items-center rounded-l-md px-2 py-2" onClick={() => setShowGraph(showGraph => !showGraph)}>
