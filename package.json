@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^1.0.6",
     "@react-sigma/core": "^3.4.0",
     "@react-sigma/layout-core": "^3.4.0",

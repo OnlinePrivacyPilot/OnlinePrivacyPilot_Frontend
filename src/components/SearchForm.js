@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TargetProvider, useTarget } from '../contexts/TargetContext'
-import { FiltersProvider, useFilters, useFiltersDispatch } from '../contexts/FiltersContext'
+import { useFilters, useFiltersDispatch } from '../contexts/FiltersContext'
 import { SearchParametersProvider, useSearchParameters } from '../contexts/SearchParametersContext';
 import { useFingerprintsDispatch } from '../contexts/FingerprintsContext';
 import axios from 'axios'
@@ -8,23 +8,21 @@ import axios from 'axios'
 export default function SearchForm() {
     return (
     <TargetProvider>
-        <FiltersProvider>
-            <SearchParametersProvider>
-                <div className='min-h-screen py-16 px-4'>
-                    <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
-                        <div className='inline space-y-8 p-4 basis-full lg:basis-3/4 max-w-full'>
-                                <AddTarget />
-                                <AddFilter />
-                                <FiltersList />
-                                <SearchParameters />
-                        </div>
-                        <div className='p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
-                            <SearchButton />        
-                        </div>
+        <SearchParametersProvider>
+            <div className='min-h-[90vh] py-16 px-4'>
+                <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
+                    <div className='inline space-y-8 p-4 basis-full lg:basis-3/4 max-w-full'>
+                            <AddTarget />
+                            <AddFilter />
+                            <FiltersList />
+                            <SearchParameters />
+                    </div>
+                    <div className='p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
+                        <SearchButton />        
                     </div>
                 </div>
-            </SearchParametersProvider>
-        </FiltersProvider>
+            </div>
+        </SearchParametersProvider>
     </TargetProvider>
     )
 }
@@ -88,6 +86,7 @@ function AddFilter() {
                                 id: nextId,
                                 value: value,
                                 type: type,
+                                method: "user_input",
                                 positive: positive
                             });
                         }}

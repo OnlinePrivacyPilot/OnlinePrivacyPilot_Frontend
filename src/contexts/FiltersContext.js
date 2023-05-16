@@ -34,7 +34,7 @@ function filtersReducer(filters, action) {
                     id: action.id,
                     value: action.value,
                     type: action.type,
-                    method: 'user_input',
+                    method: action.method,
                     positive: action.positive
                 }];
             }
