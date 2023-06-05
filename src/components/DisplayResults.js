@@ -1,14 +1,25 @@
 import { useFingerprints } from "../contexts/FingerprintsContext";
 import { DisplayGraph } from "./DisplayGraph";
 
-export const DisplayResults = (props) => {
+export function DisplayResults() {
     const fingerprints = useFingerprints();
 
+    function renderGraphComponent() {
+        if ( fingerprints.length !== 0 ) {
+            return (
+                <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 w-full h-full'>
+                    <DisplayGraph fingerprint={fingerprints.at(-1).fingerprint} />
+                </div>
+            );
+        } else {
+            return (
+                <></>
+            )
+        }
+    }
     return (
-        <div id="results" className={`${fingerprints.length === 0 ? "invisible" : "visible"}  px-4`}>
-            <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap w-full' style={{ height: '100vh', width: "100%" }}>
-                <DisplayGraph fingerprint={fingerprints.at(-1).fingerprint} />
-            </div>
+        <div id="results" className={`${fingerprints.length === 0 ? "invisible" : "visible"} px-4`} style={{ height: '95vh', width: "100%" }}>
+            {renderGraphComponent()}
         </div>
     );
 };
