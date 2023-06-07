@@ -6,12 +6,11 @@ import { useLayoutForceAtlas2 } from "@react-sigma/layout-forceatlas2";
 import "@react-sigma/core/lib/react-sigma.min.css";
 import { useFilters, useFiltersDispatch } from '../contexts/FiltersContext';
 
-export function DisplayGraph({fingerprint}) {
+export function DisplayGraph({fingerprint, nodesCreated}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [currentFootprint, setCurrentFootprint] = useState(0);
+    const [currentFootprint, setCurrentFootprint] = useState(fingerprint.nodes[0].key);
     const filters = useFilters();
     const dispatch = useFiltersDispatch();
-
 
     function closeModal() {
         setIsModalOpen(false);
@@ -26,9 +25,9 @@ export function DisplayGraph({fingerprint}) {
         dispatch({
             op: 'add',
             id: filters.length,
-            value: fingerprint.nodes.at(currentFootprint).attributes.target,
-            type: fingerprint.nodes.at(currentFootprint).attributes.target_type,
-            method: fingerprint.nodes.at(currentFootprint).attributes.method,
+            value: fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target,
+            type: fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target_type,
+            method: fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.method,
             positive: positive
         });
     }
@@ -43,9 +42,19 @@ export function DisplayGraph({fingerprint}) {
         const graph = Graph.from(fingerprint);
         const nbNodes = fingerprint.nodes.length;
         graph.nodes().forEach((node, i) => {
+        if (nodesCreated.length > 0 && nodesCreated.includes(node)) {
             graph.setNodeAttribute(node, "x", i);
             graph.setNodeAttribute(node, "y", nbNodes-i);
             graph.setNodeAttribute(node, "size", 15);
+            graph.setNodeAttribute(node, "color", "#ee1d23");
+
+        }
+        else {
+            graph.setNodeAttribute(node, "x", i);
+            graph.setNodeAttribute(node, "y", nbNodes-i);
+            graph.setNodeAttribute(node, "size", 15);
+        }
+            
         });
 
         loadGraph(graph);
@@ -62,7 +71,9 @@ export function DisplayGraph({fingerprint}) {
             // Register the events
             registerEvents({
                 // node events
-                clickNode: (event) => openModal(event.node)
+                clickNode: (event) => {
+                    openModal(event.node)
+                }
             });
         }, [registerEvents]);
         return null;
@@ -104,14 +115,14 @@ export function DisplayGraph({fingerprint}) {
                                 as="h3"
                                 className="text-lg font-medium leading-6 text-gray-900"
                             >
-                                Footprint : {fingerprint.nodes.at(currentFootprint).attributes.target}
+                                Footprint : {fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target}
                             </Dialog.Title>
                             <div className="mt-2">
                                 <p className="text-sm text-gray-500">
-                                    Type : {fingerprint.nodes.at(currentFootprint).attributes.target_type}
+                                    Type : {fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target_type}
                                 </p>
                                 <p className="text-sm text-gray-500">
-                                    Method : {fingerprint.nodes.at(currentFootprint).attributes.method}
+                                    Method : {fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.method}
                                 </p>
                             </div>
 
