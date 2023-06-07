@@ -6,11 +6,39 @@ import { useLayoutForceAtlas2 } from "@react-sigma/layout-forceatlas2";
 import "@react-sigma/core/lib/react-sigma.min.css";
 import { useFilters, useFiltersDispatch } from '../contexts/FiltersContext';
 
-export function DisplayGraph({fingerprint, nodesCreated}) {
+function findNodeDifferences(json1, json2) {
+    //We assume here that JSON2 is the most recent one
+      const nodes1 = json1.nodes;
+      const nodes2 = json2.nodes;
+    
+      const nodeDifferences = [];
+    
+      //nodes second JSON
+      for (let i = 0; i < nodes2.length; i++) {
+          const node2 = nodes2[i];
+          const key2 = node2.key;
+          
+          const matchingNode = nodes1.find((node1) => node1.key === key2);
+          
+          if (!matchingNode) {
+              nodeDifferences.push(key2);
+          }
+      }
+      return nodeDifferences;
+
+};
+
+export function DisplayGraph({fingerprints}) {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [currentFootprint, setCurrentFootprint] = useState(fingerprint.nodes[0].key);
     const filters = useFilters();
     const dispatch = useFiltersDispatch();
+
+    const fingerprint = fingerprints.at(-1).fingerprint;
+    const nodesCreated = fingerprints.length >= 2 ? findNodeDifferences(fingerprints.at(-2).fingerprint, fingerprints.at(-1).fingerprint) : [];
+    const nodesDeleted = fingerprints.length >= 2 ? findNodeDifferences(fingerprints.at(-1).fingerprint, fingerprints.at(-2).fingerprint) : [];
+
+    const [currentFootprint, setCurrentFootprint] = useState(fingerprint.nodes[0].key);
+    
 
     function closeModal() {
         setIsModalOpen(false);
