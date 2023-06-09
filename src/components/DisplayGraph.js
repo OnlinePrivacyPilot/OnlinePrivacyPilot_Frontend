@@ -5,6 +5,7 @@ import { SigmaContainer, useSigma, useLoadGraph, useRegisterEvents } from "@reac
 import { useLayoutForceAtlas2 } from "@react-sigma/layout-forceatlas2";
 import "@react-sigma/core/lib/react-sigma.min.css";
 import { useFilters, useFiltersDispatch } from '../contexts/FiltersContext';
+import axios from 'axios'
 
 function findNodeDifferences(json1, json2) {
     //We assume here that JSON2 is the most recent one
@@ -35,19 +36,62 @@ export function DisplayGraph({fingerprints}) {
 
     const fingerprint = fingerprints.at(-1).fingerprint;
     const nodesCreated = fingerprints.length >= 2 ? findNodeDifferences(fingerprints.at(-2).fingerprint, fingerprints.at(-1).fingerprint) : [];
-    const nodesDeleted = fingerprints.length >= 2 ? findNodeDifferences(fingerprints.at(-1).fingerprint, fingerprints.at(-2).fingerprint) : [];
 
     const [currentFootprint, setCurrentFootprint] = useState(fingerprint.nodes[0].key);
+    const [windowOpen, setWindowOpen] = useState(false);
+    const [jdmDatabase, setJdmDatabase] = useState([]);
+    const [deletionUrl, setDeletionUrl] = useState(null);
+    const pattern = /^(?:https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,})(?:\/.*)?$/;
     
+    useEffect(() => {//Then we collect the data of the db, maybe do it outside of the function at the same time we are doing the request to the API
+    const fetchJdmDatabase = async () => {
+    try {
+        const response = await axios.get(
+        'https://raw.githubusercontent.com/jdm-contrib/jdm/master/_data/sites.json'
+        );
+        setJdmDatabase(response.data);
+    } catch (error) {
+        console.error('Error fetching sites data:', error);
+    }
+    };
+
+    fetchJdmDatabase();
+    }, []);
+
+    const collectDeletionLink = (domain) => {
+        const obj = jdmDatabase.find((site) =>    
+            site.domains.includes(domain[1])
+        );
+        // Perform the redirection if deletionUrl is not null
+        if (obj) {
+            setDeletionUrl(obj.url);
+        } else {
+            console.log("No matching object found for the domain:", domain[1]);
+        }
+    };
+
+    useEffect(() => {
+        if (deletionUrl && windowOpen === false) {
+           // Redirects to the deletion URL
+          setWindowOpen(true)
+          window.open(deletionUrl, "_blank")
+        }
+      }, [deletionUrl]);
+      
+    const domainFindCollection = (domain) => {
+        collectDeletionLink(domain);
+    };    
 
     function closeModal() {
+        setDeletionUrl(null)
         setIsModalOpen(false);
-    }
+        setWindowOpen(false)
+    };
   
     function openModal(FootprintID) {
         setCurrentFootprint(FootprintID);
         setIsModalOpen(true);
-    }
+    };
 
     function setAsFilter(positive) {
         dispatch({
@@ -173,7 +217,15 @@ export function DisplayGraph({fingerprints}) {
                                 >
                                     Mark as irrelevant
                                 </div>
-                            </div>
+                                {(fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target_type === 'url' || fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target_type === 'has_account') && (
+                                <div
+                                    className="inline-flex w-full justify-center rounded-md border border-transparent mt-4 bg-blue-200 px-4 py-2 text-sm text-center font-medium text-blue-900"
+                                    onClick={() => domainFindCollection(fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target.match(pattern))}
+                                >
+                                    Remove my data
+                                </div>
+                                )}
+                            </div>                               
                             </Dialog.Panel>
                         </Transition.Child>
                         </div>
