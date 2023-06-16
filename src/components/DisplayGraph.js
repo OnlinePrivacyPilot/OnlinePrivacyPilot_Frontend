@@ -6,6 +6,7 @@ import { useLayoutForceAtlas2 } from "@react-sigma/layout-forceatlas2";
 import "@react-sigma/core/lib/react-sigma.min.css";
 import { useFilters, useFiltersDispatch } from '../contexts/FiltersContext';
 import axios from 'axios'
+import Linkify from 'react-linkify';
 
 function findNodeDifferences(json1, json2) {
     //We assume here that JSON2 is the most recent one
@@ -37,7 +38,7 @@ export function DisplayGraph({fingerprints}) {
     const fingerprint = fingerprints.at(-1).fingerprint;
     const nodesCreated = fingerprints.length >= 2 ? findNodeDifferences(fingerprints.at(-2).fingerprint, fingerprints.at(-1).fingerprint) : [];
 
-    const [currentFootprint, setCurrentFootprint] = useState(fingerprint.nodes[0].key);
+    const [currentFootprintAttributes, setCurrentFootprintAttributes] = useState(fingerprint.nodes.find(node => node.key === fingerprint.nodes[0].key)?.attributes);
     const [windowOpen, setWindowOpen] = useState(false);
     const [jdmDatabase, setJdmDatabase] = useState([]);
     const [deletionUrl, setDeletionUrl] = useState(null);
@@ -89,7 +90,8 @@ export function DisplayGraph({fingerprints}) {
     };
   
     function openModal(FootprintID) {
-        setCurrentFootprint(FootprintID);
+        setCurrentFootprintAttributes(fingerprint.nodes.find(node => node.key === FootprintID)?.attributes)
+        console.log(currentFootprintAttributes)
         setIsModalOpen(true);
     };
 
@@ -97,9 +99,9 @@ export function DisplayGraph({fingerprints}) {
         dispatch({
             op: 'add',
             id: filters.length,
-            value: fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target,
-            type: fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target_type,
-            method: fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.method,
+            value: currentFootprintAttributes.target,
+            type: currentFootprintAttributes.target_type,
+            method: currentFootprintAttributes.method,
             positive: positive
         });
     }
@@ -169,7 +171,7 @@ export function DisplayGraph({fingerprints}) {
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                     >
-                        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
+                        <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />   
                     </Transition.Child>
 
                     <div className="fixed inset-0 overflow-y-auto">
@@ -188,14 +190,19 @@ export function DisplayGraph({fingerprints}) {
                                 as="h3"
                                 className="text-lg font-medium leading-6 text-gray-900"
                             >
-                                Footprint : {fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target}
+                                Footprint: {' '}
+                                    {currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account' ? (
+                                    <a href={currentFootprintAttributes.target} target="_blank">{currentFootprintAttributes.target}</a>
+                                    ) : (
+                                    <span>{currentFootprintAttributes.target}</span>
+                                    )}
                             </Dialog.Title>
                             <div className="mt-2">
                                 <p className="text-sm text-gray-500">
-                                    Type : {fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target_type}
+                                    Type : {currentFootprintAttributes.target_type}
                                 </p>
                                 <p className="text-sm text-gray-500">
-                                    Method : {fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.method}
+                                    Method: {currentFootprintAttributes.method}
                                 </p>
                             </div>
 
@@ -218,10 +225,10 @@ export function DisplayGraph({fingerprints}) {
                                 >
                                     Mark as irrelevant
                                 </div>
-                                {(fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target_type === 'url' || fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target_type === 'has_account') && (
+                                {(currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && (
                                 <div
                                     className="inline-flex w-full justify-center rounded-md border border-transparent mt-4 bg-blue-200 px-4 py-2 text-sm text-center font-medium text-blue-900"
-                                    onClick={() => domainFindCollection(fingerprint.nodes.find(node => node.key === currentFootprint)?.attributes.target.match(pattern))}
+                                    onClick={() => domainFindCollection(currentFootprintAttributes.target.match(pattern))}
                                 >
                                     Remove my data
                                 </div>
