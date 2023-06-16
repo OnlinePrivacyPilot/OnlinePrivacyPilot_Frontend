@@ -6,7 +6,6 @@ import { useLayoutForceAtlas2 } from "@react-sigma/layout-forceatlas2";
 import "@react-sigma/core/lib/react-sigma.min.css";
 import { useFilters, useFiltersDispatch } from '../contexts/FiltersContext';
 import axios from 'axios'
-import Linkify from 'react-linkify';
 
 function findNodeDifferences(json1, json2) {
     //We assume here that JSON2 is the most recent one
@@ -71,18 +70,21 @@ export function DisplayGraph({fingerprints}) {
         }
     };
 
-    useEffect(() => {
+    const handleClick = () => {
         if (deletionUrl && windowOpen === false) {
            // Redirects to the deletion URL
           setWindowOpen(true)
           window.open(deletionUrl, "_blank")
         }
-      }, [deletionUrl]);
-      
-    const domainFindCollection = (domain) => {
-        collectDeletionLink(domain);
-    };    
+    };
 
+    useEffect(() => {
+        if (currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') {
+            collectDeletionLink(currentFootprintAttributes.target.match(pattern))
+        }
+    }, [currentFootprintAttributes]);
+    
+    
     function closeModal() {
         setDeletionUrl(null)
         setIsModalOpen(false);
@@ -91,9 +93,9 @@ export function DisplayGraph({fingerprints}) {
   
     function openModal(FootprintID) {
         setCurrentFootprintAttributes(fingerprint.nodes.find(node => node.key === FootprintID)?.attributes)
-        console.log(currentFootprintAttributes)
         setIsModalOpen(true);
     };
+    
 
     function setAsFilter(positive) {
         dispatch({
@@ -225,10 +227,10 @@ export function DisplayGraph({fingerprints}) {
                                 >
                                     Mark as irrelevant
                                 </div>
-                                {(currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && (
+                                {(currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && deletionUrl &&(
                                 <div
                                     className="inline-flex w-full justify-center rounded-md border border-transparent mt-4 bg-blue-200 px-4 py-2 text-sm text-center font-medium text-blue-900"
-                                    onClick={() => domainFindCollection(currentFootprintAttributes.target.match(pattern))}
+                                    onClick={handleClick}
                                 >
                                     Remove my data
                                 </div>
