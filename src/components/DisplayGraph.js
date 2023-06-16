@@ -111,20 +111,21 @@ export function DisplayGraph({fingerprints}) {
 
         useEffect(() => {
         // Create the graph
+        console.log(fingerprint)
         const graph = Graph.from(fingerprint);
         const nbNodes = fingerprint.nodes.length;
         graph.nodes().forEach((node, i) => {
+        i === 0 ?  graph.setNodeAttribute(node, "size", 25) : graph.setNodeAttribute(node, "size", 15);
+
         if (nodesCreated.length > 0 && nodesCreated.includes(node)) {
             graph.setNodeAttribute(node, "x", i);
             graph.setNodeAttribute(node, "y", nbNodes-i);
-            graph.setNodeAttribute(node, "size", 15);
             graph.setNodeAttribute(node, "color", "#ee1d23");
 
         }
         else {
             graph.setNodeAttribute(node, "x", i);
             graph.setNodeAttribute(node, "y", nbNodes-i);
-            graph.setNodeAttribute(node, "size", 15);
         }
             
         });
