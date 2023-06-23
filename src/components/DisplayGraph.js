@@ -59,15 +59,17 @@ export function DisplayGraph({fingerprints}) {
     }, []);
 
     const collectDeletionLink = (domain) => {
-        const obj = jdmDatabase.find((site) =>    
-            site.domains.includes(domain[1])
-        );
-        // Perform the redirection if deletionUrl is not null
-        if (obj) {
-            setDeletionUrl(obj.url);
-        } else {
-            console.log("No matching object found for the domain:", domain[1]);
-        }
+        if(domain) {
+            const obj = jdmDatabase.find((site) =>    
+                site.domains.includes(domain[1])
+            );
+            // Perform the redirection if deletionUrl is not null
+            if (obj) {
+                setDeletionUrl(obj.url);
+            } else {
+                console.log("No matching object found for the domain:", domain[1]);
+            } 
+        }  
     };
 
     const handleClick = () => {
@@ -79,7 +81,7 @@ export function DisplayGraph({fingerprints}) {
     };
 
     useEffect(() => {
-        if (currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') {
+        if ((currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && currentFootprintAttributes.target.match(pattern) !== null) {
             collectDeletionLink(currentFootprintAttributes.target.match(pattern))
         }
     }, [currentFootprintAttributes]);
@@ -193,7 +195,7 @@ export function DisplayGraph({fingerprints}) {
                                 className="text-lg font-medium leading-6 text-gray-900"
                             >
                                 Footprint: {' '}
-                                    {currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account' ? (
+                                    {(currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && currentFootprintAttributes.target.match(pattern) ? (
                                     <a href={currentFootprintAttributes.target} target="_blank">{currentFootprintAttributes.target}</a>
                                     ) : (
                                     <span>{currentFootprintAttributes.target}</span>
@@ -228,11 +230,22 @@ export function DisplayGraph({fingerprints}) {
                                     Mark as irrelevant
                                 </div>
                                 {(currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && deletionUrl &&(
+                                <div>
                                 <div
                                     className="inline-flex w-full justify-center rounded-md border border-transparent mt-4 bg-blue-200 px-4 py-2 text-sm text-center font-medium text-blue-900"
                                     onClick={handleClick}
                                 >
                                     Remove my data
+                                </div>
+                                <span className="italic text-gray-500">Deletion process provided by{' '}
+                                <a
+                                    href="https://justdeleteme.xyz/"
+                                    className="text-blue-500 underline"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    JustDeleteMe
+                                </a></span>
                                 </div>
                                 )}
                             </div>                               
