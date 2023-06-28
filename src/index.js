@@ -5,7 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
+root.render( //Vient greffer notre React a notre HTML
   <React.StrictMode>
     <App />
   </React.StrictMode>
