@@ -38,6 +38,8 @@ export function DisplayGraph({fingerprints}) {
     const nodesCreated = fingerprints.length >= 2 ? findNodeDifferences(fingerprints.at(-2).fingerprint, fingerprints.at(-1).fingerprint) : [];
 
     const [currentFootprintAttributes, setCurrentFootprintAttributes] = useState(fingerprint.nodes.find(node => node.key === fingerprint.nodes[0].key)?.attributes);
+    //this variable is here to handle the case where we click and the same node twice in a row
+    const [triggerEffect, setTriggerEffect] = useState(false);
     const [windowOpen, setWindowOpen] = useState(false);
     const [jdmDatabase, setJdmDatabase] = useState([]);
     const [deletionUrl, setDeletionUrl] = useState(null);
@@ -81,23 +83,35 @@ export function DisplayGraph({fingerprints}) {
     };
 
     useEffect(() => {
-        if ((currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && currentFootprintAttributes.target.match(pattern) !== null) {
+        if (
+            currentFootprintAttributes &&
+            (
+                currentFootprintAttributes.target_type === 'url' ||
+                currentFootprintAttributes.target_type === 'has_account'
+            ) &&
+            currentFootprintAttributes.target.match(pattern) !== null
+        ) {
             collectDeletionLink(currentFootprintAttributes.target.match(pattern))
+        } else {
+            setDeletionUrl(null);   
         }
-    }, [currentFootprintAttributes]);
+        // Reset the trigger to false after the effect runs
+        setTriggerEffect(false);
+    }, [currentFootprintAttributes, triggerEffect]);
     
     
     function closeModal() {
-        setDeletionUrl(null)
+        setDeletionUrl(null);
         setIsModalOpen(false);
-        setWindowOpen(false)
-    };
-  
-    function openModal(FootprintID) {
-        setCurrentFootprintAttributes(fingerprint.nodes.find(node => node.key === FootprintID)?.attributes)
-        setIsModalOpen(true);
-    };
+        setWindowOpen(false);
+    }
     
+    function openModal(FootprintID) {
+        setCurrentFootprintAttributes(fingerprint.nodes.find(node => node.key === FootprintID)?.attributes);
+        setTriggerEffect(true);
+        setIsModalOpen(true);
+    }
+      
 
     function setAsFilter(positive) {
         dispatch({
@@ -117,7 +131,6 @@ export function DisplayGraph({fingerprints}) {
 
         useEffect(() => {
         // Create the graph
-        console.log(fingerprint)
         const graph = Graph.from(fingerprint);
         const nbNodes = fingerprint.nodes.length;
         graph.nodes().forEach((node, i) => {
