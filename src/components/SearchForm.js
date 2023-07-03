@@ -99,7 +99,7 @@ function AddFilter() {
 
 
 function AddTarget() {
-    const { targetValue: [targetValue, setTargetValue], targetType: [, setTargetType] } = useTarget();
+    const { targetValue: [, setTargetValue], targetType: [, setTargetType] } = useTarget();
 
     return (
         <div className='space-y-2'>
@@ -389,15 +389,6 @@ function SearchButton() {
     function handleSubmit() {
         if (searchInProgress === false && targetData.targetValue[0] !== '') {
 
-            if (searchParametersData.apiState[0]) {
-                if (searchParametersData.apiKeyState[0] !== '' && searchParametersData.cseIdState[0] !== '') {
-                    params['api_key'] = searchParametersData.apiKeyState[0];
-                    params['cse_id'] = searchParametersData.cseIdState[0]; 
-                } else {
-                    return; // Workaround to force to provide API key if API is selected
-                }
-            }
-                 
             const params = {
                 target: targetData.targetValue[0].toString(),
                 active_search: searchParametersData.activeState[0] === true ? 1 : 0,
@@ -413,6 +404,16 @@ function SearchButton() {
                 )
             }
 
+            if (searchParametersData.apiState[0]) {
+                console.log('if', params)
+                if (searchParametersData.apiKeyState[0] !== '' && searchParametersData.cseIdState[0] !== '') {
+                    params['api_key'] = searchParametersData.apiKeyState[0];
+                    params['cse_id'] = searchParametersData.cseIdState[0]; 
+                } else {
+                    return; // Workaround to force to provide API key if API is selected
+                }
+            }
+                 
             setSearchInProgress(true); // Process starts
 
             axios
