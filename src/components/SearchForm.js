@@ -206,17 +206,12 @@ function Filter({filter}) {
 }
 
 function SearchParameters() {
-    const { apiState: [apiUse, setApiUse], activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [ ,setApiKeyValue], cseIdState: [ ,setCseIdValue] } = useSearchParameters();
+    const { activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [ ,setApiKeyValue], cseIdState: [ ,setCseIdValue] } = useSearchParameters();
     const [apiKeyState, setApiKeyState] = useState(false);
     const [cseIdState, setCseIdState] = useState(false);
 
     const apiKeyLength = 39;
     const cseIdLength = 17;
-
-    const handleAPIClick = () => {
-        setApiUse(!apiUse);
-        enableInputs();
-    };
 
     const handleActiveClick = () => {
         setActiveUse(!activeUse);
@@ -258,11 +253,10 @@ function SearchParameters() {
         <div className='w-full space-y-4'>
             <div className='flex items-center gap-4 max-h-6'>
                 <div className="flex-initial flex items-center gap-2">
-                    <Hint>Here you can enter Google API key and CSE ID to use Google Search API instead of scraping results from Google webpage. If you don't want to use Google Search API, clear the checkbox.</Hint>
-                    <input type="checkbox" id="checkbox" name="apiKey" defaultChecked={apiUse} onChange={handleAPIClick}/>
+                    <Hint>Here you can enter Google API key to use Google Search API.</Hint>
                     <span className='font-medium truncate text-gray-900'>API</span>
                 </div>
-                <div className={`${apiUse === false ? 'hidden' : ''} flex gap-2`}>
+                <div className={`flex gap-2`}>
                     <input
                     type="text"
                     name="apiKey"
@@ -404,14 +398,11 @@ function SearchButton() {
                 )
             }
 
-            if (searchParametersData.apiState[0]) {
-                console.log('if', params)
-                if (searchParametersData.apiKeyState[0] !== '' && searchParametersData.cseIdState[0] !== '') {
-                    params['api_key'] = searchParametersData.apiKeyState[0];
-                    params['cse_id'] = searchParametersData.cseIdState[0]; 
-                } else {
-                    return; // Workaround to force to provide API key if API is selected
-                }
+            if (searchParametersData.apiKeyState[0] !== '' && searchParametersData.cseIdState[0] !== '') {
+                params['api_key'] = searchParametersData.apiKeyState[0];
+                params['cse_id'] = searchParametersData.cseIdState[0]; 
+            } else {
+                return; // Workaround to force to provide API key if API is selected
             }
                  
             setSearchInProgress(true); // Process starts

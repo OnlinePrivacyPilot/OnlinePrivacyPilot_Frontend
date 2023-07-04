@@ -13,7 +13,7 @@ export function SearchParametersProvider({ children }) {
 
     return (
         <SearchParametersContext.Provider
-            value={{ apiState: [apiUse, setApiUse], activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [apiKeyValue, setApiKeyValue], cseIdState: [cseIdValue, setCseIdValue] }}
+            value={{ activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [apiKeyValue, setApiKeyValue], cseIdState: [cseIdValue, setCseIdValue] }}
         >
             {children}
         </SearchParametersContext.Provider>
