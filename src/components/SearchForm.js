@@ -381,10 +381,10 @@ function SearchButton() {
     const dispatch = useFingerprintsDispatch();
     
     function handleSubmit() {
-        if (searchInProgress === false && targetData.targetValue[0] !== '') {
+        if (searchInProgress === false && targetData.targetValue[0]?.toString() !== '') {
 
             const params = {
-                target: targetData.targetValue[0].toString(),
+                target: targetData.targetValue[0]?.toString(),
                 active_search: searchParametersData.activeState[0] === true ? 1 : 0,
                 depth: searchParametersData.depthValue[0],
                 initial_filters: JSON.stringify(
