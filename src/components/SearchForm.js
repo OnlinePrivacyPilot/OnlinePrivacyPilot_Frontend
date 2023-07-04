@@ -206,12 +206,10 @@ function Filter({filter}) {
 }
 
 function SearchParameters() {
-    const { activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [ ,setApiKeyValue], cseIdState: [ ,setCseIdValue] } = useSearchParameters();
+    const { activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [ ,setApiKeyValue] } = useSearchParameters();
     const [apiKeyState, setApiKeyState] = useState(false);
-    const [cseIdState, setCseIdState] = useState(false);
 
     const apiKeyLength = 39;
-    const cseIdLength = 17;
 
     const handleActiveClick = () => {
         setActiveUse(!activeUse);
@@ -225,27 +223,18 @@ function SearchParameters() {
         const apiKey = document.getElementById('apiKey');
         apiKey.value = e.target.value;
     };
-
-    const handleCseValue = (e) => {
-        const cseId = document.getElementById('cseId');
-        cseId.value = e.target.value;
-    };
     
     const disableInputs = () => {
         const apiKey = document.getElementById('apiKey');
-        const cseId = document.getElementById('cseId');
-        if (apiKey.value.length === apiKeyLength && cseId.value.length === cseIdLength){
+
+        if (apiKey.value.length === apiKeyLength){
             setApiKeyState(true);
-            setCseIdState(true);
-            setCseIdValue(cseId.value)
             setApiKeyValue(apiKey.value)
         }
     };
 
     const enableInputs = () => {
         setApiKeyState(false);
-        setCseIdState(false);
-        setCseIdValue('');
         setApiKeyValue('');
     };
 
@@ -269,17 +258,6 @@ function SearchParameters() {
                     required
                     />
 
-                    <input
-                        type="text"
-                        name="cseId"
-                        id="cseId"
-                        disabled= {cseIdState}
-                        className='block w-full rounded-md p-2 border-zinc-400 placeholder:text-zinc-400 border-2 text-gray-900'
-                        placeholder="CSE Id"
-                        size={cseIdLength}
-                        onChange={handleCseValue}
-                        required 
-                    />
                     <ActionButton
                         style={apiKeyState === false? 'add' : 'edit'}
                         action={apiKeyState === false? disableInputs : enableInputs}
@@ -398,9 +376,8 @@ function SearchButton() {
                 )
             }
 
-            if (searchParametersData.apiKeyState[0] !== '' && searchParametersData.cseIdState[0] !== '') {
+            if (searchParametersData.apiKeyState[0] !== '') {
                 params['api_key'] = searchParametersData.apiKeyState[0];
-                params['cse_id'] = searchParametersData.cseIdState[0]; 
             } else {
                 return; // Workaround to force to provide API key if API is selected
             }
