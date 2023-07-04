@@ -7,23 +7,23 @@ import axios from 'axios'
 
 export default function SearchForm() {
     return (
-    <TargetProvider>
-        <SearchParametersProvider>
-            <div className='min-h-[90vh] py-16 px-4'>
-                <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
-                    <div className='inline space-y-8 p-4 basis-full lg:basis-3/4 max-w-full'>
+        <TargetProvider>
+            <SearchParametersProvider>
+                <div className='min-h-[90vh] py-16 px-4'>
+                    <div className='bg-zinc-200 rounded-lg border-2 border-solid border-zinc-300 p-4 flex flex-wrap'>
+                        <div className='inline space-y-8 p-4 basis-full lg:basis-3/4 max-w-full'>
                             <AddTarget />
                             <AddFilter />
                             <FiltersList />
                             <SearchParameters />
-                    </div>
-                    <div className='p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
-                        <SearchButton />        
+                        </div>
+                        <div className='p-4 lg:pt-64 basis-full lg:basis-1/4 text-center'>
+                            <SearchButton />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </SearchParametersProvider>
-    </TargetProvider>
+            </SearchParametersProvider>
+        </TargetProvider>
     )
 }
 
@@ -146,7 +146,7 @@ function FiltersList() {
     )
 }
 
-function Filter({filter}) {
+function Filter({ filter }) {
     const dispatch = useFiltersDispatch();
     return (
         <div className={`${filter.positive === 1 ? 'border-green-400' : 'border-red-400'} border-2 bg-zinc-100 rounded-lg`}>
@@ -177,8 +177,7 @@ function Filter({filter}) {
 }
 
 function SearchParameters() {
-    const { activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [ ,setApiKeyValue] } = useSearchParameters();
-    const [apiKeyState, setApiKeyState] = useState(false);
+    const { activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [, setApiKeyValue], apiValidation: [apiKeyState, setApiKeyState] } = useSearchParameters();
 
     const apiKeyLength = 39;
 
@@ -194,11 +193,11 @@ function SearchParameters() {
         const apiKey = document.getElementById('apiKey');
         apiKey.value = e.target.value;
     };
-    
+
     const disableInputs = () => {
         const apiKey = document.getElementById('apiKey');
 
-        if (apiKey.value.length === apiKeyLength){
+        if (apiKey.value.length === apiKeyLength) {
             setApiKeyState(true);
             setApiKeyValue(apiKey.value)
         }
@@ -218,20 +217,20 @@ function SearchParameters() {
                 </div>
                 <div className="flex-1 flex gap-4">
                     <input
-                    type="text"
-                    name="apiKey"
-                    disabled= {apiKeyState}
-                    id="apiKey"
-                    size={apiKeyLength}
-                    className='block w-full rounded-md p-2 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400'
-                    placeholder="API key"
-                    onChange={handleApiValue}
-                    required
+                        type="text"
+                        name="apiKey"
+                        disabled={apiKeyState}
+                        id="apiKey"
+                        size={apiKeyLength}
+                        className='block w-full rounded-md p-2 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400'
+                        placeholder="API key"
+                        onChange={handleApiValue}
+                        required
                     />
 
                     <ActionButton
-                        style={apiKeyState === false? 'add' : 'edit'}
-                        action={apiKeyState === false? disableInputs : enableInputs}
+                        style={apiKeyState === false ? 'add' : 'edit'}
+                        action={apiKeyState === false ? disableInputs : enableInputs}
                     />
                 </div>
             </div>
@@ -241,17 +240,17 @@ function SearchParameters() {
                     <input type="checkbox" id="apiKey" name="apiKey" defaultChecked={activeUse} onChange={handleActiveClick} />
                     <span className="ml-1">Active search</span>
                 </div>
-                
+
             </div>
             <div className='flex-initial flex items-center gap-2'>
                 <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
                     <Hint>This option defines the maximum number of recursions that can be performed on the target during the search.</Hint>
                     <div className="font-medium truncate text-gray-900">
                         Depth
-                    </div>   
+                    </div>
                 </div>
                 <div className="flex w-50 items-center font-sans gap-2">
-                    <input id="depth" name="depth" type="range" min="1" max="6" value={depth} className="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange}/>
+                    <input id="depth" name="depth" type="range" min="1" max="6" value={depth} className="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange} />
                     <label htmlFor="depth">{depth}</label>
                 </div>
             </div>
@@ -259,7 +258,7 @@ function SearchParameters() {
     )
 }
 
-function Hint({children}) {
+function Hint({ children }) {
     return (
         <div className='group relative'>
             <div className='w-5 h-5 border-2 border-solid border-zinc-900 bg-zinc-300 rounded-full opacity-70 transition-opacity hover:opacity-100 hover:ring-2 hover:ring-inset hover:ring-zinc-400'>
@@ -277,7 +276,7 @@ function Hint({children}) {
     );
 }
 
-function ActionButton({style, action}) {
+function ActionButton({ style, action }) {
     function genButton() {
         switch (style) {
             case 'add': {
@@ -328,9 +327,11 @@ function SearchButton() {
     const filtersData = useFilters();
     const searchParametersData = useSearchParameters();
     const dispatch = useFingerprintsDispatch();
-    
+    const [clickLaunchSearch, setClickLaunchSearch] = useState(false)
+
     function handleSubmit() {
         if (searchInProgress === false && targetData.targetValue[0]?.toString() !== '') {
+            setClickLaunchSearch(true)
 
             const params = {
                 target: targetData.targetValue[0]?.toString(),
@@ -339,9 +340,9 @@ function SearchButton() {
                 initial_filters: JSON.stringify(
                     filtersData.map(filter => {
                         return {
-                          value: filter.value,
-                          type: filter.type,
-                          positive: filter.positive
+                            value: filter.value,
+                            type: filter.type,
+                            positive: filter.positive
                         };
                     })
                 )
@@ -352,7 +353,7 @@ function SearchButton() {
             } else {
                 return; // Workaround to force to provide API key if API is selected
             }
-                 
+
             setSearchInProgress(true); // Process starts
 
             axios
@@ -375,9 +376,9 @@ function SearchButton() {
                 });
         }
     };
-          
+
     return (
-        <div className='flex-wrap space-y-4'>
+        <div className='flex-wrap space-y-4 relative'>
             <div className='basis-full'>
                 <button className='rounded-lg p-4' onClick={handleSubmit}>Launch search</button>
             </div>
@@ -388,6 +389,20 @@ function SearchButton() {
                 </svg>
                 Search in progress...
             </div>
+            {!searchParametersData.apiKeyState[0] && clickLaunchSearch && targetData.targetValue[0]?.toString() !== undefined ? (
+                <div
+                    className="absolute bg-red-400 text-white py-2 px-4 rounded-md"
+                >
+                    You cannot launch a query without your API key. Please enter it.
+                </div>
+            ) : null}
+            {targetData.targetValue[0]?.toString() === undefined && clickLaunchSearch ? (
+                <div
+                    className="absolute bg-orange-400 text-white py-2 px-4 rounded-md"
+                >
+                    You must provide a target, for example: "Jane Doe"
+                </div>
+            ) : null}
         </div>
     )
 }
