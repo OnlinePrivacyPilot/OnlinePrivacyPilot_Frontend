@@ -53,26 +53,12 @@ function AddFilter() {
                         <select
                             id="otherFilterPositive"
                             name="otherFilterPositive"
-                            className="h-full rounded-l-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                            className="h-full rounded-l-md rounded-r-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                             defaultValue={1}
                             onChange={e => setPositive(+e.target.value)}
                         >
                             <option value={1}>Positive</option>
                             <option value={0}>Negative</option>
-                        </select>
-                        <select
-                            id="otherFilterType"
-                            name="otherFilterType"
-                            className="h-full rounded-r-md text-sm border-2 border-l-0 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                            defaultValue="name"
-                            onChange={e => setType(e.target.value)}
-                        >
-                            <option value="name">Name</option>
-                            <option value="username">Username</option>
-                            <option value="email">Email</option>
-                            <option value="location">Location</option>
-                            <option value="phone">Phone</option>
-                            <option value="occupation">Occupation</option>
                         </select>
                     </div>
                 </div>
@@ -120,21 +106,6 @@ function AddTarget() {
                         setTargetValue(e.target.value)
                     }}
                 />
-                <div className="absolute inset-y-0 right-0 flex items-center">
-                    <select
-                        id="mainFilterType"
-                        name="mainFilterType"
-                        className="h-full rounded-lg text-base border-2 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
-                        defaultValue="name"
-                        onChange={e => {
-                            setTargetType(e.target.value)
-                        }}
-                    >
-                        <option value="name">Name</option>
-                        <option value="username">Username</option>
-                        <option value="email">Email</option>
-                    </select>
-                </div>
             </div>
         </div>
     )
@@ -241,11 +212,11 @@ function SearchParameters() {
     return (
         <div className='w-full space-y-4'>
             <div className='flex items-center gap-4 max-h-6'>
-                <div className="flex-initial flex items-center gap-2">
+                <div className="flex items-center gap-2">
                     <Hint>Here you can enter Google API key to use Google Search API.</Hint>
                     <span className='font-medium truncate text-gray-900'>API</span>
                 </div>
-                <div className={`flex gap-2`}>
+                <div className="flex-1 flex gap-4">
                     <input
                     type="text"
                     name="apiKey"
