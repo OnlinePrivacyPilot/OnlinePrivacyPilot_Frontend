@@ -380,7 +380,7 @@ function SearchButton() {
     return (
         <div className='flex-wrap relative'>
             <div className='basis-full'>
-                <button className='rounded-lg p-4' onClick={handleSubmit}>Launch search</button>
+                <button className='rounded-lg p-4 text-white border-2 bg-zinc-500 border-zinc-400 hover:bg-zinc-400' onClick={handleSubmit}>Launch search</button>
             </div>
             <div className={`${searchInProgress ? 'visible' : 'invisible'} basis-full flex justify-center items-center`}>
                 <svg className='animate-spin h-5 w-5 mr-3' viewBox="0 0 24 24">
