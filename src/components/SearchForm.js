@@ -29,7 +29,7 @@ export default function SearchForm() {
 
 function AddFilter() {
     const [value, setValue] = useState('');
-    const [type, setType] = useState('name');
+    const [type, ] = useState('name');
     const [positive, setPositive] = useState(1);
     const dispatch = useFiltersDispatch();
     const nextId = useFilters().length;
@@ -64,7 +64,7 @@ function AddFilter() {
                 </div>
                 <div className='flex items-center'>
                     <ActionButton
-                        style='add'
+                        actionType='add'
                         action={() => {
                             setValue('');
                             dispatch({
@@ -85,7 +85,7 @@ function AddFilter() {
 
 
 function AddTarget() {
-    const { targetValue: [, setTargetValue], targetType: [, setTargetType] } = useTarget();
+    const { targetValue: [, setTargetValue] } = useTarget();
 
     return (
         <div className='space-y-2'>
@@ -162,7 +162,7 @@ function Filter({ filter }) {
                 </div>
                 <div className='p-2 basis-1/12 text-center'>
                     <ActionButton
-                        style='delete'
+                        actionType='delete'
                         action={() => {
                             dispatch({
                                 op: 'delete',
@@ -229,7 +229,7 @@ function SearchParameters() {
                     />
 
                     <ActionButton
-                        style={apiKeyState === false ? 'add' : 'edit'}
+                        actionType={apiKeyState === false ? 'add' : 'edit'}
                         action={apiKeyState === false ? disableInputs : enableInputs}
                     />
                 </div>
@@ -276,9 +276,9 @@ function Hint({ children }) {
     );
 }
 
-function ActionButton({ style, action }) {
+function ActionButton({ actionType, action }) {
     function genButton() {
-        switch (style) {
+        switch (actionType) {
             case 'add': {
                 return (
                     <div className='flex items-center' onClick={action}>
@@ -322,6 +322,7 @@ function ActionButton({ style, action }) {
 }
 
 function SearchButton() {
+    const [errorMessage, setErrorMessage] = useState(null);
     const [searchInProgress, setSearchInProgress] = useState(false);
     const targetData = useTarget();
     const filtersData = useFilters();
@@ -373,6 +374,7 @@ function SearchButton() {
                 .catch(error => {
                     console.error(error);
                     setSearchInProgress(false); // Process ends
+                    setErrorMessage('An error occurred while fetching data, please verify you API key'); // Set the error message
                 });
         }
     };
@@ -388,6 +390,9 @@ function SearchButton() {
                     <path className='opacity-75' fill='currentColor' d='M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z'></path>
                 </svg>
                 Search in progress...
+            </div>
+            <div>
+                {errorMessage && <p>{errorMessage}</p>}
             </div>
             {!searchParametersData.apiKeyState[0] && clickLaunchSearch && targetData.targetValue[0]?.toString() !== undefined ? (
                 <div
