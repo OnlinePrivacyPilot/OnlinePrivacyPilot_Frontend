@@ -44,7 +44,7 @@ function AddFilter() {
             <div className='flex gap-4'>
                 <div className="flex-1 relative rounded-md shadow-sm">
                     <input
-                        className="block w-full rounded-md py-2 pl-4 pr-52 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+                        className="block w-full rounded-md py-2 pl-4 pr-24 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                         placeholder="John Doe"
                         value={value}
                         onChange={e => setValue(e.target.value)}
@@ -100,7 +100,7 @@ function AddTarget() {
                     type="text"
                     name="mainFilterValue"
                     id="mainFilterValue"
-                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-32 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-4 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                     placeholder="John Doe"
                     onChange={e => {
                         setTargetValue(e.target.value)
@@ -378,7 +378,7 @@ function SearchButton() {
     };
 
     return (
-        <div className='flex-wrap space-y-4 relative'>
+        <div className='flex-wrap relative'>
             <div className='basis-full'>
                 <button className='rounded-lg p-4' onClick={handleSubmit}>Launch search</button>
             </div>
@@ -391,14 +391,14 @@ function SearchButton() {
             </div>
             {!searchParametersData.apiKeyState[0] && clickLaunchSearch && targetData.targetValue[0]?.toString() !== undefined ? (
                 <div
-                    className="absolute bg-red-400 text-white py-2 px-4 rounded-md"
+                    className="relative bg-red-400 text-white py-2 px-4 rounded-md"
                 >
                     You cannot launch a query without your API key. Please enter it.
                 </div>
             ) : null}
             {targetData.targetValue[0]?.toString() === undefined && clickLaunchSearch ? (
                 <div
-                    className="absolute bg-orange-400 text-white py-2 px-4 rounded-md"
+                    className="relative bg-orange-400 text-white py-2 px-4 rounded-md"
                 >
                     You must provide a target, for example: "Jane Doe"
                 </div>
