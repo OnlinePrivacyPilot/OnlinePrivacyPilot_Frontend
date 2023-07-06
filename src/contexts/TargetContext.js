@@ -4,11 +4,11 @@ export const TargetContext = createContext(null);
 
 export function TargetProvider({ children }) {
     const [targetValue, setTargetValue] = useState();
-    const [targetType, setTargetType] = useState('Name');
+    const [targetValid, setTargetValid] = useState();
 
     return (
         <TargetContext.Provider
-            value={{ targetValue: [targetValue, setTargetValue], targetType: [targetType, setTargetType] }}
+            value={{ targetValue: [targetValue, setTargetValue], targetState: [targetValid, setTargetValid] }}
         >
             {children}
         </TargetContext.Provider>

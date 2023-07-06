@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { TargetProvider, useTarget } from '../contexts/TargetContext'
 import { useFilters, useFiltersDispatch } from '../contexts/FiltersContext'
 import { SearchParametersProvider, useSearchParameters } from '../contexts/SearchParametersContext';
@@ -29,7 +29,7 @@ export default function SearchForm() {
 
 function AddFilter() {
     const [value, setValue] = useState('');
-    const [type, ] = useState('name');
+    const [type,] = useState('name');
     const [positive, setPositive] = useState(1);
     const dispatch = useFiltersDispatch();
     const nextId = useFilters().length;
@@ -85,7 +85,7 @@ function AddFilter() {
 
 
 function AddTarget() {
-    const { targetValue: [, setTargetValue] } = useTarget();
+    const { targetValue: [targetValue, setTargetValue], targetState: [targetValid, setTargetValid] } = useTarget();
 
     return (
         <div className='space-y-2'>
@@ -106,6 +106,11 @@ function AddTarget() {
                         setTargetValue(e.target.value)
                     }}
                 />
+            </div>
+            <div
+                className={`${targetValid === false && (targetValue === undefined || targetValue === '') ? 'visible' : 'invisible'} relative text-orange-400 rounded-md`}
+            >
+                You must provide a target, for example: "Jane Doe"
             </div>
         </div>
     )
@@ -177,8 +182,7 @@ function Filter({ filter }) {
 }
 
 function SearchParameters() {
-    const { activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyState: [, setApiKeyValue], apiValidation: [apiKeyState, setApiKeyState] } = useSearchParameters();
-
+    const { activeState: [activeUse, setActiveUse], depthValue: [depth, setDepth], apiKeyVal: [apiKeyValue, setApiKeyValue], apiValidation: [apiKeyState, setApiKeyState] } = useSearchParameters();
     const apiKeyLength = 39;
 
     const handleActiveClick = () => {
@@ -189,51 +193,35 @@ function SearchParameters() {
         setDepth(event.target.value);
     };
 
-    const handleApiValue = (e) => {
-        const apiKey = document.getElementById('apiKey');
-        apiKey.value = e.target.value;
-    };
-
-    const disableInputs = () => {
-        const apiKey = document.getElementById('apiKey');
-
-        if (apiKey.value.length === apiKeyLength) {
-            setApiKeyState(true);
-            setApiKeyValue(apiKey.value)
-        }
-    };
-
-    const enableInputs = () => {
-        setApiKeyState(false);
-        setApiKeyValue('');
-    };
-
     return (
         <div className='w-full space-y-4'>
             <div className='flex items-center gap-4 max-h-6'>
                 <div className="flex items-center gap-2">
                     <Hint>Here you can enter Google API key to use Google Search API.</Hint>
-                    <span className='font-medium truncate text-gray-900'>API</span>
+                    <span className='font-medium truncate text-gray-900'>API key</span>
                 </div>
                 <div className="flex-1 flex gap-4">
                     <input
                         type="text"
                         name="apiKey"
-                        disabled={apiKeyState}
                         id="apiKey"
                         size={apiKeyLength}
                         className='block w-full rounded-md p-2 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400'
                         placeholder="API key"
-                        onChange={handleApiValue}
+                        onChange={e => {
+                            setApiKeyValue(e.target.value)
+                        }}
                         required
-                    />
-
-                    <ActionButton
-                        actionType={apiKeyState === false ? 'add' : 'edit'}
-                        action={apiKeyState === false ? disableInputs : enableInputs}
                     />
                 </div>
             </div>
+            <div className="relative text-red-400 py-2 px-4 rounded-md">
+                {(apiKeyState === 'false' && (apiKeyValue === undefined || apiKeyValue === '')) && (
+                    <p>You cannot launch a query without your API key. Please enter it.</p>
+                )} 
+                {apiKeyState === 'error' && (<p>We are not able to perform the query. Please check your API key</p>)}
+            </div>
+
             <div className='flex-initial flex items-center gap-2'>
                 <Hint>This option activates the active search, specific queries are likely to be made to websites that cannot be trusted. Use with caution.</Hint>
                 <div className="font-medium truncate text-gray-900">
@@ -254,7 +242,7 @@ function SearchParameters() {
                     <label htmlFor="depth">{depth}</label>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
@@ -311,7 +299,6 @@ function ActionButton({ actionType, action }) {
                 )
             }
             default: {
-                // return nothing
                 return (<></>)
             }
         }
@@ -322,22 +309,64 @@ function ActionButton({ actionType, action }) {
 }
 
 function SearchButton() {
-    const [errorMessage, setErrorMessage] = useState(null);
     const [searchInProgress, setSearchInProgress] = useState(false);
-    const targetData = useTarget();
+    const { targetValue: [targetValue,], targetState: [, setTargetValid] } = useTarget();
     const filtersData = useFilters();
-    const searchParametersData = useSearchParameters();
+    const [clickOnSubmit, setClickOnSubmit] = useState(false) //enable the useEffect to still run even if the apiKey does not change
+    const { activeState: [activeUse,], depthValue: [depth,], apiKeyVal: [apiKeyValue, setApiKeyValue], apiValidation: [apiKeyState, setApiKeyState] } = useSearchParameters();
     const dispatch = useFingerprintsDispatch();
-    const [clickLaunchSearch, setClickLaunchSearch] = useState(false)
+    const apiKeyLength = 39;
 
     function handleSubmit() {
-        if (searchInProgress === false && targetData.targetValue[0]?.toString() !== '') {
-            setClickLaunchSearch(true)
+
+        if (targetValue?.toString() !== undefined && targetValue?.toString() !== '') {
+            setTargetValid(true)
+        }
+        else {
+            setTargetValid(false)
+        }
+
+        if (apiKeyValue?.length === apiKeyLength) {
+            const params = {
+                q: 'test',
+                key: apiKeyValue,
+                cx: '566c87e9879ac4d59',
+            };
+
+            const config = {
+                headers: {
+                    Accept: 'application/json',
+                },
+            };
+
+            axios
+                .get('https://customsearch.googleapis.com/customsearch/v1', { params, ...config })
+                .then(function () {
+                    setApiKeyValue(apiKeyValue);
+                    setApiKeyState('true');
+                    setClickOnSubmit(!clickOnSubmit);
+                })
+                .catch(error => {
+                    console.error(error);
+                    setApiKeyState('error');
+                    setClickOnSubmit(!clickOnSubmit);
+                });
+        }
+        else {
+            setApiKeyState('false');
+            setClickOnSubmit(!clickOnSubmit);
+        }
+
+        
+    };
+
+    useEffect(() => {
+        if (searchInProgress === false && apiKeyState === 'true') {
 
             const params = {
-                target: targetData.targetValue[0]?.toString(),
-                active_search: searchParametersData.activeState[0] === true ? 1 : 0,
-                depth: searchParametersData.depthValue[0],
+                target: targetValue?.toString(),
+                active_search: activeUse === true ? 1 : 0,
+                depth: depth,
                 initial_filters: JSON.stringify(
                     filtersData.map(filter => {
                         return {
@@ -349,18 +378,16 @@ function SearchButton() {
                 )
             }
 
-            if (searchParametersData.apiKeyState[0] !== '') {
-                params['api_key'] = searchParametersData.apiKeyState[0];
+            if (apiKeyValue !== '') {
+                params['api_key'] = apiKeyValue;
             } else {
                 return; // Workaround to force to provide API key if API is selected
             }
 
-            setSearchInProgress(true); // Process starts
-
+            setSearchInProgress(true)
             axios
                 .get('http://127.0.0.1:5000/api/?', { params })
                 .then(response => {
-                    console.log(response.data);
                     dispatch({
                         op: 'new',
                         fingerprint: response.data
@@ -374,10 +401,9 @@ function SearchButton() {
                 .catch(error => {
                     console.error(error);
                     setSearchInProgress(false); // Process ends
-                    setErrorMessage('An error occurred while fetching data, please verify you API key'); // Set the error message
                 });
         }
-    };
+    }, [clickOnSubmit, apiKeyState]);
 
     return (
         <div className='flex-wrap relative'>
@@ -391,23 +417,6 @@ function SearchButton() {
                 </svg>
                 Search in progress...
             </div>
-            <div>
-                {errorMessage && <p>{errorMessage}</p>}
-            </div>
-            {!searchParametersData.apiKeyState[0] && clickLaunchSearch && targetData.targetValue[0]?.toString() !== undefined ? (
-                <div
-                    className="relative bg-red-400 text-white py-2 px-4 rounded-md"
-                >
-                    You cannot launch a query without your API key. Please enter it.
-                </div>
-            ) : null}
-            {targetData.targetValue[0]?.toString() === undefined && clickLaunchSearch ? (
-                <div
-                    className="relative bg-orange-400 text-white py-2 px-4 rounded-md"
-                >
-                    You must provide a target, for example: "Jane Doe"
-                </div>
-            ) : null}
         </div>
     )
 }
