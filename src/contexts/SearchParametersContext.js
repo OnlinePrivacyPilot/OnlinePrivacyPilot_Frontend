@@ -5,7 +5,7 @@ export const SearchParametersContext = createContext(null);
 export function SearchParametersProvider({ children }) {
     const [activeUse, setActiveUse] = useState(false);
     const [depth, setDepth] = useState(2);
-    const [apiKeyValue, setApiKeyValue] = useState();
+    const [apiKeyValue, setApiKeyValue] = useState("");
     const [apiKeyState, setApiKeyState] = useState();
 
 

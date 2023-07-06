@@ -37,14 +37,14 @@ function AddFilter() {
         <div className='space-y-2'>
             <div className='flex-initial flex items-center gap-2'>
                 <Hint>Here you can specify filters to improve the relevance of the search, positive filters are used to select a subset of results and negative filters are used to exclude a subset of results.</Hint>
-                <div className="font-medium truncate text-gray-900">
+                <div className="font-medium truncate text-zinc-900">
                     Add filter
                 </div>
             </div>
             <div className='flex gap-4'>
                 <div className="flex-1 relative rounded-md shadow-sm">
                     <input
-                        className="block w-full rounded-md py-2 pl-4 pr-24 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+                        className="block w-full rounded-md py-2 pl-4 pr-24 text-zinc-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                         placeholder="John Doe"
                         value={value}
                         onChange={e => setValue(e.target.value)}
@@ -53,7 +53,7 @@ function AddFilter() {
                         <select
                             id="otherFilterPositive"
                             name="otherFilterPositive"
-                            className="h-full rounded-l-md rounded-r-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-gray-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+                            className="h-full rounded-l-md rounded-r-md text-sm border-2 border-r-1 border-zinc-400 bg-zinc-300 py-0 px-2 text-zinc-900 focus:ring-2 focus:ring-inset focus:ring-indigo-500"
                             defaultValue={1}
                             onChange={e => setPositive(+e.target.value)}
                         >
@@ -91,7 +91,7 @@ function AddTarget() {
         <div className='space-y-2'>
             <div className='flex-initial flex items-center gap-2'>
                 <Hint>Here you have to specify the target, i.e. a piece of information that characterizes you and that will be used as a starting point for the search.</Hint>
-                <div className="font-medium truncate text-gray-900">
+                <div className="font-medium truncate text-zinc-900">
                     Target
                 </div>
             </div>
@@ -100,17 +100,15 @@ function AddTarget() {
                     type="text"
                     name="mainFilterValue"
                     id="mainFilterValue"
-                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-4 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400"
+                    className="block w-full text-xl rounded-lg py-4 pl-4 pr-4 text-zinc-900 border-2 border-zinc-400 placeholder:text-zinc-400"
                     placeholder="John Doe"
                     onChange={e => {
                         setTargetValue(e.target.value)
                     }}
                 />
             </div>
-            <div
-                className={`${targetValid === false && (targetValue === undefined || targetValue === '') ? 'visible' : 'invisible'} relative text-orange-400 rounded-md`}
-            >
-                You must provide a target, for example: "Jane Doe"
+            <div className={`${targetValid === false && (targetValue === undefined || targetValue === '') ? 'visible' : 'invisible'} p-2 text-sm text-yellow-600 border border-2 border-yellow-600 rounded-md bg-yellow-50`}>
+                You must provide a target, for example: "Jane Doe".
             </div>
         </div>
     )
@@ -122,7 +120,7 @@ function FiltersList() {
         <div className='space-y-2'>
             <div className='flex-initial flex items-center gap-2'>
                 <Hint>Here will be displayed the list of filters that you have provided manually and from the results in the graph. The positive filters are circled in green and the negative ones in red.</Hint>
-                <div className="font-medium truncate text-gray-900">
+                <div className="font-medium truncate text-zinc-900">
                     Current filters
                 </div>
             </div>
@@ -195,51 +193,56 @@ function SearchParameters() {
 
     return (
         <div className='w-full space-y-4'>
-            <div className='flex items-center gap-4 max-h-6'>
-                <div className="flex items-center gap-2">
-                    <Hint>Here you can enter Google API key to use Google Search API.</Hint>
-                    <span className='font-medium truncate text-gray-900'>API key</span>
-                </div>
-                <div className="flex-1 flex gap-4">
-                    <input
-                        type="text"
-                        name="apiKey"
-                        id="apiKey"
-                        size={apiKeyLength}
-                        className='block w-full rounded-md p-2 text-gray-900 border-2 border-zinc-400 placeholder:text-zinc-400'
-                        placeholder="API key"
-                        onChange={e => {
-                            setApiKeyValue(e.target.value)
-                        }}
-                        required
-                    />
-                </div>
-            </div>
-            <div className="relative text-red-400 py-2 px-4 rounded-md">
-                {(apiKeyState === 'false' && (apiKeyValue === undefined || apiKeyValue === '')) && (
-                    <p>You cannot launch a query without your API key. Please enter it.</p>
-                )} 
-                {apiKeyState === 'error' && (<p>We are not able to perform the query. Please check your API key</p>)}
-            </div>
-
-            <div className='flex-initial flex items-center gap-2'>
-                <Hint>This option activates the active search, specific queries are likely to be made to websites that cannot be trusted. Use with caution.</Hint>
-                <div className="font-medium truncate text-gray-900">
-                    <input type="checkbox" id="apiKey" name="apiKey" defaultChecked={activeUse} onChange={handleActiveClick} />
-                    <span className="ml-1">Active search</span>
-                </div>
-
-            </div>
-            <div className='flex-initial flex items-center gap-2'>
-                <div className="items-center align-middle inline-flex flex-shrink-0 w-28 gap-2">
-                    <Hint>This option defines the maximum number of recursions that can be performed on the target during the search.</Hint>
-                    <div className="font-medium truncate text-gray-900">
-                        Depth
+            <div className='space-y-2'>
+                <div className='flex flex-row items-center gap-2'>
+                    <Hint>Here you must enter Google API key to use Google Search API.</Hint>
+                    <div className='flex-initial font-medium truncate text-zinc-900'>API key</div>
+                    <div className='flex-1'>
+                        <input
+                            type="text"
+                            name="apiKey"
+                            id="apiKey"
+                            size={apiKeyLength}
+                            className='w-full rounded-md p-2 text-zinc-900 border-2 border-zinc-400 placeholder:text-zinc-400'
+                            placeholder="API key"
+                            onChange={e => {
+                                setApiKeyValue(e.target.value)
+                                setApiKeyState("pending")
+                            }}
+                            required
+                        />
                     </div>
                 </div>
-                <div className="flex w-50 items-center font-sans gap-2">
-                    <input id="depth" name="depth" type="range" min="1" max="6" value={depth} className="h-4 w-full focus:ring-2 focus:ring-inset rounded border-gray-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange} />
-                    <label htmlFor="depth">{depth}</label>
+                <div className="h-10">
+                    <div className={`${apiKeyState === "invalid" ? '' : 'hidden'} p-2 text-sm text-yellow-600 border border-2 border-yellow-600 rounded-md bg-yellow-50`}>
+                        The API key is not valid.  Please check your API key.
+                    </div>
+                    <div className={`${apiKeyState === "error" ? '' : 'hidden'} p-2 text-sm text-yellow-600 border border-2 border-yellow-600 rounded-md bg-yellow-50`}>
+                        We are not able to perform the query. Please check your API key.
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div className='flex items-center gap-2'>
+                <Hint>This option activates the active search, specific queries are likely to be made to websites that cannot be trusted. Use with caution.</Hint>
+                <div className="flex-initial font-medium truncate">Active search</div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" className="sr-only peer" id="activeSearch" name="activeSearch" defaultChecked={activeUse} onChange={handleActiveClick} />
+                    <div class="w-[36px] h-5 bg-zinc-400 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-blue-600"></div>
+                </label>
+            </div>
+            <div className='flex-initial flex items-center gap-2'>
+                <Hint>This option defines the maximum number of recursions that can be performed on the target during the search.</Hint>
+                <div className="flex-initial font-medium truncate">Search depth</div>
+                <div className="flex-initial font-medium">
+                    <div className="w-9 bg-zinc-400 rounded-md text-center">
+                        {depth}
+                    </div>
+                </div>
+                <div className="flex-initial">
+                    <input id="depth" name="depth" type="range" min="1" max="6" value={depth} className="h-4 w-full focus:ring-2 focus:ring-inset rounded border-zinc-300 text-indigo-600 focus:ring-indigo-600" onChange={handleRangeChange} />
                 </div>
             </div>
         </div >
@@ -321,39 +324,44 @@ function SearchButton() {
 
         if (targetValue?.toString() !== undefined && targetValue?.toString() !== '') {
             setTargetValid(true)
-        }
-        else {
+        } else {
             setTargetValid(false)
         }
 
         if (apiKeyValue?.length === apiKeyLength) {
-            const params = {
-                q: 'test',
-                key: apiKeyValue,
-                cx: '566c87e9879ac4d59',
-            };
+            if (apiKeyValue === '000000000000000000000000000000000000000') { // Specific value to avoid API use
+                setApiKeyValue(apiKeyValue);
+                setApiKeyState('valid');
+                setClickOnSubmit(!clickOnSubmit);
+            } else {
+                const params = {
+                    q: 'test',
+                    key: apiKeyValue,
+                    cx: '566c87e9879ac4d59',
+                };
 
-            const config = {
-                headers: {
-                    Accept: 'application/json',
-                },
-            };
+                const config = {
+                    headers: {
+                        Accept: 'application/json',
+                    },
+                };
 
-            axios
-                .get('https://customsearch.googleapis.com/customsearch/v1', { params, ...config })
-                .then(function () {
-                    setApiKeyValue(apiKeyValue);
-                    setApiKeyState('true');
-                    setClickOnSubmit(!clickOnSubmit);
-                })
-                .catch(error => {
-                    console.error(error);
-                    setApiKeyState('error');
-                    setClickOnSubmit(!clickOnSubmit);
-                });
+                axios
+                    .get('https://customsearch.googleapis.com/customsearch/v1', { params, ...config })
+                    .then(function () {
+                        setApiKeyValue(apiKeyValue);
+                        setApiKeyState('valid');
+                        setClickOnSubmit(!clickOnSubmit);
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        setApiKeyState('error');
+                        setClickOnSubmit(!clickOnSubmit);
+                    });
+            }
         }
         else {
-            setApiKeyState('false');
+            setApiKeyState('invalid');
             setClickOnSubmit(!clickOnSubmit);
         }
 
@@ -361,7 +369,7 @@ function SearchButton() {
     };
 
     useEffect(() => {
-        if (searchInProgress === false && apiKeyState === 'true') {
+        if (searchInProgress === false && apiKeyState === 'valid') {
 
             const params = {
                 target: targetValue?.toString(),
