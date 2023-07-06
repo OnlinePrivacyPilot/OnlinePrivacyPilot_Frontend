@@ -205,11 +205,11 @@ export function DisplayGraph({fingerprints}) {
                             <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all">
                             <Dialog.Title
                                 as="h3"
-                                className="text-lg font-medium leading-6 text-gray-900"
+                                className="text-lg font-medium leading-6 text-gray-900 truncate"
                             >
                                 Footprint: {' '}
                                     {(currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && currentFootprintAttributes.target.match(pattern) ? (
-                                    <a href={currentFootprintAttributes.target} target="_blank">{currentFootprintAttributes.target}</a>
+                                    <a href={currentFootprintAttributes.target} className="text-blue-500 hover:underline" target="_blank">{currentFootprintAttributes.target}</a>
                                     ) : (
                                     <span>{currentFootprintAttributes.target}</span>
                                     )}
@@ -223,43 +223,48 @@ export function DisplayGraph({fingerprints}) {
                                 </p>
                             </div>
 
-                            <div className="mt-4 space-x-2">
+                            <div className="flex flex-wrap mt-4 gap-2">
                                 <div
-                                className="inline-flex justify-center rounded-md border border-transparent bg-zinc-200 px-4 py-2 text-sm font-medium text-zinc-900"
+                                className="flex-grow text-center rounded-md border border-transparent bg-zinc-200 px-4 py-2 text-sm font-medium text-zinc-900"
                                 onClick={closeModal}
                                 >
                                     Close
                                 </div>
-                                <div
-                                className="inline-flex justify-center rounded-md border border-transparent bg-green-200 px-4 py-2 text-sm font-medium text-green-900"
-                                onClick={() => {setAsFilter(1); closeModal();}}
-                                >
-                                    Mark as relevant
-                                </div>
-                                <div
-                                className="inline-flex justify-center rounded-md border border-transparent bg-red-200 px-4 py-2 text-sm font-medium text-red-900"
-                                onClick={() => {setAsFilter(0); closeModal();}}
-                                >
-                                    Mark as irrelevant
-                                </div>
+                                {(currentFootprintAttributes.target_type !== 'has_account') &&(
+                                <>
+                                    <div
+                                    className="flex-grow text-center rounded-md border border-transparent bg-green-200 px-4 py-2 text-sm font-medium text-green-900"
+                                    onClick={() => {setAsFilter(1); closeModal();}}
+                                    >
+                                        Mark as relevant
+                                    </div>
+                                    <div
+                                    className="flex-grow text-center rounded-md border border-transparent bg-red-200 px-4 py-2 text-sm font-medium text-red-900"
+                                    onClick={() => {setAsFilter(0); closeModal();}}
+                                    >
+                                        Mark as irrelevant
+                                    </div>
+                                </>
+                                )}
                                 {(currentFootprintAttributes.target_type === 'url' || currentFootprintAttributes.target_type === 'has_account') && deletionUrl &&(
-                                <div>
-                                <div
-                                    className="inline-flex w-full justify-center rounded-md border border-transparent mt-4 bg-blue-200 px-4 py-2 text-sm text-center font-medium text-blue-900"
+                                <>
+                                    <div 
+                                    className="basis-full justify-center rounded-md border border-transparent mt-4 bg-blue-200 px-4 py-2 text-sm text-center font-medium text-blue-900"
                                     onClick={handleClick}
-                                >
-                                    Remove my data
-                                </div>
-                                <span className="italic text-gray-500">Deletion process provided by{' '}
-                                <a
-                                    href="https://justdeleteme.xyz/"
-                                    className="text-blue-500 underline"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    JustDeleteMe
-                                </a></span>
-                                </div>
+                                    >
+                                        Remove my data
+                                    </div>
+                                    <span className="italic text-gray-500">Deletion process provided by{' '}
+                                        <a 
+                                        href="https://justdeleteme.xyz/"
+                                        className="text-blue-500 underline"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        >
+                                            JustDeleteMe
+                                        </a>
+                                    </span>
+                                </>
                                 )}
                             </div>                               
                             </Dialog.Panel>
